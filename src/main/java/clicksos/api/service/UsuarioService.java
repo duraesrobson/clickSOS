@@ -1,7 +1,7 @@
 package clicksos.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,7 @@ import clicksos.api.repository.UsuarioRepository;
 public class UsuarioService {
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -21,7 +21,8 @@ public class UsuarioService {
     @Transactional
     public Usuario criaUsuario(DadosCriarUsuario dados) {
         String senhaCriptografada = passwordEncoder.encode(dados.senha());
-        Usuario usuario = new Usuario(dados.nome(), dados.usuario(), dados.email(), senhaCriptografada);
+        Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.usuario(), dados.email(),
+                senhaCriptografada);
 
         return usuarioRepository.save(usuario);
     }
