@@ -28,6 +28,7 @@ public class Contato {
 
     private String nome;
     private String email;
+    private String telefone;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
