@@ -32,7 +32,7 @@ public class Usuario {
     private Long id;
 
     private String nome;
-    private String login;
+    private String usuario;
     private String senha;
     private String email;
     private LocalDateTime criadoEm;
@@ -45,10 +45,11 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Alert> alertas = new ArrayList<>();
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String usuario, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.usuario = usuario;
     }
 
     public void desativarUsuario() {

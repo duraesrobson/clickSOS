@@ -1,7 +1,5 @@
 package clicksos.api.model;
 
-import org.hibernate.query.sqm.FetchClauseType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +28,6 @@ public class Contato {
 
     private String nome;
     private String email;
-    private String telefone;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")

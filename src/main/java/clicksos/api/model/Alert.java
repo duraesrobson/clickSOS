@@ -1,8 +1,9 @@
 package clicksos.api.model;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,8 +29,11 @@ public class Alert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String latitude;
-    private String longitude;
+    @Column(precision = 10, scale = 8, nullable = false)
+    private BigDecimal latitude;
+    @Column(precision = 11, scale = 8, nullable = false)
+    private BigDecimal longitude;
+
     private LocalDateTime criadoEm;
 
     @ManyToOne(fetch = FetchType.EAGER)
