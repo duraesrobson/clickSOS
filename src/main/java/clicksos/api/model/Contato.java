@@ -34,4 +34,11 @@ public class Contato {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    public Contato(String nome, String email, String telefone, Usuario usuario) {
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.usuario = usuario;
+    }
+
 }

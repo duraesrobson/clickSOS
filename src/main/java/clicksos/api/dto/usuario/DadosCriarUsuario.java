@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import clicksos.api.dto.contato.DadosCriarContato;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record DadosCriarUsuario(
@@ -16,6 +17,6 @@ public record DadosCriarUsuario(
         @NotBlank String usuario,
         @NotBlank String senha,
         @NotBlank @Email String email,
-        @NotNull List<@NotBlank DadosCriarContato> contatos) {
+        @NotEmpty List<DadosCriarContato> contatos) {
 
 }
