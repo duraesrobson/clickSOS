@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -48,7 +49,7 @@ public class Usuario {
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean ativo = true;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Contato> contatos = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
@@ -77,5 +78,9 @@ public class Usuario {
 
     public Long getId() {
         return this.id;
+    }
+
+    public List<Contato> getContatos() {
+        return contatos;
     }
 }
