@@ -6,12 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import clicksos.api.dto.alert.DadosCriarAlert;
 import clicksos.api.model.Alert;
+import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
 import clicksos.api.repository.AlertaRepository;
 import clicksos.api.repository.UsuarioRepository;
 
 @Service
 public class AlertService {
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private AlertaRepository alertaRepository;
@@ -26,6 +30,19 @@ public class AlertService {
 
         Alert alert = new Alert(dados.latitude(), dados.longitude(), usuario);
 
-        return alertaRepository.save(alert);
+        alert = alertaRepository.save(alert);
+        String mapaLink = "https://www.google.com/maps?q=" + alert.getLatitude() + "," + alert.getLongitude();
+
+        // Enviar e-mail para os contatos
+        String mensagem = "Alerta recebido!\nLatitude: " + dados.latitude() +
+                "\nLongitude: " + dados.longitude() +
+                "\n\n" + alert.getMensagem() +
+                "\nEssa é minha localização: " + mapaLink;
+
+        for (Contato c : usuario.getContatos()) {
+            emailService.enviarEmail(c.getEmail(), "Novo alerta!", mensagem);
+        }
+
+        return alert;
     }
 }
