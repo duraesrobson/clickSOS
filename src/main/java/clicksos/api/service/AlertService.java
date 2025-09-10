@@ -37,10 +37,11 @@ public class AlertService {
         String mensagem = "Alerta recebido!\nLatitude: " + dados.latitude() +
                 "\nLongitude: " + dados.longitude() +
                 "\n\n" + alert.getMensagem() +
+                "\nMeu nome é " + alert.getUsuario().getNome() + "." +
                 "\nEssa é minha localização: " + mapaLink;
 
         for (Contato c : usuario.getContatos()) {
-            emailService.enviarEmail(c.getEmail(), "Novo alerta!", mensagem);
+            emailService.enviarEmail(c.getEmail(), "Novo alerta de " + alert.getUsuario().getNome() + "!", mensagem);
         }
 
         return alert;
