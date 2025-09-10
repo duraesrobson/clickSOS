@@ -8,4 +8,6 @@ import clicksos.api.model.Usuario;
 @Service
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+    Usuario findByEmail(String email);
+
 }
