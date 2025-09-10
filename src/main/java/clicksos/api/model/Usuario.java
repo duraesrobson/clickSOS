@@ -45,6 +45,7 @@ public class Usuario {
     private String email;
     private LocalDateTime criadoEm;
 
+    @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean ativo = true;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
@@ -72,5 +73,9 @@ public class Usuario {
     @PrePersist
     public void prePersist() {
         this.criadoEm = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return this.id;
     }
 }
