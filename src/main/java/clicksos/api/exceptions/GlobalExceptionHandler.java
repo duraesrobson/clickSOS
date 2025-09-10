@@ -38,6 +38,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
+    @ExceptionHandler(TratarErros.SenhasNaoConferem.class)
+    public ResponseEntity<?> handleSenhasNaoConferem(TratarErros.SenhasNaoConferem ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErroResponse(ex.getMessage()));
+    }
+
     // DTO para retorno
     record ErroResponse(String mensagem) {
     }

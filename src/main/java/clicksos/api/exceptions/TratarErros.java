@@ -12,4 +12,11 @@ public class TratarErros {
         }
     }
 
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Senhas não conferem")
+    public static class SenhasNaoConferem extends RuntimeException {
+        public SenhasNaoConferem() {
+            super("Senhas não conferem");
+        }
+    }
+
 }

@@ -1,12 +1,15 @@
 package clicksos.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import clicksos.api.dto.contato.DadosCriarContato;
 import clicksos.api.dto.usuario.DadosCriarUsuario;
+import clicksos.api.dto.usuario.DadosUsuario;
 import clicksos.api.exceptions.TratarErros;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
@@ -29,6 +32,10 @@ public class UsuarioService {
             throw new TratarErros.EmailJaCadastrado();
         }
 
+        if (!dados.senha().equals(dados.confirmarSenha())) {
+            throw new TratarErros.SenhasNaoConferem();
+        }
+
         Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.usuario(), dados.email(),
                 senhaCriptografada);
 
@@ -38,6 +45,10 @@ public class UsuarioService {
         }
 
         return usuarioRepository.save(usuario);
+    }
+
+    public Page<DadosUsuario> listarUsuarios(Pageable paginacao) {
+        return usuarioRepository.findAllByAtivoTrue(paginacao).map(DadosUsuario::new);
     }
 
 }
