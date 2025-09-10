@@ -1,9 +1,12 @@
 package clicksos.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import clicksos.api.dto.alert.DadosAlert;
 import clicksos.api.dto.alert.DadosCriarAlert;
 import clicksos.api.model.Alert;
 import clicksos.api.model.Contato;
@@ -45,6 +48,11 @@ public class AlertService {
         }
 
         return alert;
+    }
+
+    public Page<DadosAlert> listarAlertsPorUsuario(Long usuarioId, Pageable pageable) {
+        return alertaRepository.findAllByUsuarioId(usuarioId, pageable)
+                .map(DadosAlert::new);
     }
 
 }
