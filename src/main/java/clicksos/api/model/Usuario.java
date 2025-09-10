@@ -45,7 +45,7 @@ public class Usuario {
     private String email;
     private LocalDateTime criadoEm;
 
-    private Boolean ativo;
+    private Boolean ativo = true;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Contato> contatos = new ArrayList<>();
@@ -53,8 +53,9 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Alert> alertas = new ArrayList<>();
 
-    public Usuario(String nome, String usuario, String email, String senha) {
+    public Usuario(String nome, LocalDate dataNascimento, String usuario, String email, String senha) {
         this.nome = nome;
+        this.dataNascimento = dataNascimento;
         this.email = email;
         this.senha = senha;
         this.usuario = usuario;
