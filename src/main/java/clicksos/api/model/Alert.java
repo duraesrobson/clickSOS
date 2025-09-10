@@ -36,10 +36,17 @@ public class Alert {
     @Column(precision = 11, scale = 8, nullable = false)
     private BigDecimal longitude;
 
-    private LocalDateTime criadoEm;
+    private LocalDateTime criadoEm = LocalDateTime.now();
+    private String mensagem = "Preciso da sua ajuda!";
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
+    public Alert(BigDecimal latitude, BigDecimal longitude, Usuario usuario) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.usuario = usuario;
+    }
 
 }

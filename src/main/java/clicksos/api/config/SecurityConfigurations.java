@@ -16,6 +16,7 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/usuarios/**").permitAll()
+                        .requestMatchers("/alertas/**").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }
