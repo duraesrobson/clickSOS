@@ -3,7 +3,7 @@ package clicksos.api.dto.alert;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import clicksos.api.dto.usuario.DadosUsuarioSimples;
+import clicksos.api.dto.usuario.DadosUsuario;
 import clicksos.api.model.Alert;
 
 public record DadosAlert(
@@ -12,9 +12,9 @@ public record DadosAlert(
         BigDecimal latitude,
         BigDecimal longitude,
         LocalDateTime criadoEm,
-        DadosUsuarioSimples usuario) {
+        DadosUsuario usuario) {
     public DadosAlert(Alert alert) {
         this(alert.getId(), alert.getMensagem(), alert.getLatitude(), alert.getLongitude(), alert.getCriadoEm(),
-                new DadosUsuarioSimples(alert.getUsuario()));
+                new DadosUsuario(alert.getUsuario()));
     }
 }
