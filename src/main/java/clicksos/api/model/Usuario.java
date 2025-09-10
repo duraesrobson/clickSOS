@@ -39,10 +39,10 @@ public class Usuario {
 
     private Boolean ativo;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Contato> contatos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Alert> alertas = new ArrayList<>();
 
     public Usuario(String nome, String usuario, String email, String senha) {
