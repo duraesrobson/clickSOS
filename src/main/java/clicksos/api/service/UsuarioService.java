@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import clicksos.api.dto.contato.DadosCriarContato;
 import clicksos.api.dto.usuario.DadosCriarUsuario;
+import clicksos.api.exceptions.TratarErros;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
 import clicksos.api.repository.UsuarioRepository;
@@ -23,6 +24,11 @@ public class UsuarioService {
     @Transactional
     public Usuario criaUsuario(DadosCriarUsuario dados) {
         String senhaCriptografada = passwordEncoder.encode(dados.senha());
+
+        if (usuarioRepository.findByEmail(dados.email()) != null) {
+            throw new TratarErros.EmailJaCadastrado();
+        }
+
         Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.usuario(), dados.email(),
                 senhaCriptografada);
 
