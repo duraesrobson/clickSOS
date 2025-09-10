@@ -2,14 +2,17 @@ package clicksos.api.dto.usuario;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import clicksos.api.model.Usuario;
 
 public record DadosUsuario(
         Long id,
         String nome,
-        LocalDate dataNascimento,
+        String usuario,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy") LocalDate dataNascimento,
         String email) {
     public DadosUsuario(Usuario usuario) {
-        this(usuario.getId(), usuario.getNome(), usuario.getDataNascimento(), usuario.getEmail());
+        this(usuario.getId(), usuario.getNome(), usuario.getUsuario(), usuario.getDataNascimento(), usuario.getEmail());
     }
 }
