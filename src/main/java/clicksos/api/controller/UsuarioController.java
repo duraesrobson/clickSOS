@@ -15,11 +15,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import clicksos.api.dto.usuario.DadosCriarUsuario;
 import clicksos.api.dto.usuario.DadosUsuario;
 import clicksos.api.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
+@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
 
     @Autowired

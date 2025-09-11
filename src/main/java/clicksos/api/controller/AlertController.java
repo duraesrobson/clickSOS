@@ -16,11 +16,13 @@ import clicksos.api.dto.alert.DadosAlert;
 import clicksos.api.dto.alert.DadosCriarAlert;
 import clicksos.api.model.Alert;
 import clicksos.api.service.AlertService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/alertas")
+@SecurityRequirement(name = "bearer-key")
 public class AlertController {
 
     @Autowired
