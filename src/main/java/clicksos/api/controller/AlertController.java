@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +34,10 @@ public class AlertController {
         return ResponseEntity.created(uri).body(new DadosAlert(alert));
     }
 
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/meus-alertas")
     public ResponseEntity<Page<DadosAlert>> listarAlertasPorUsuario(
-            @PathVariable("id") Long usuarioId, @PageableDefault(size = 10) Pageable paginacao) {
-        var page = alertService.listarAlertsPorUsuario(usuarioId, paginacao);
+            @PageableDefault(size = 10) Pageable paginacao) {
+        var page = alertService.listarAlertsPorUsuario(paginacao);
         return ResponseEntity.ok(page);
     }
 

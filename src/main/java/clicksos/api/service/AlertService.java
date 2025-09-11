@@ -3,6 +3,7 @@ package clicksos.api.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +51,11 @@ public class AlertService {
         return alert;
     }
 
-    public Page<DadosAlert> listarAlertsPorUsuario(Long usuarioId, Pageable pageable) {
-        return alertaRepository.findAllByUsuarioId(usuarioId, pageable)
+    public Page<DadosAlert> listarAlertsPorUsuario(Pageable pageable) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usuario = usuarioRepository.findByEmail(email);
+
+        return alertaRepository.findAllByUsuarioId(usuario.getId(), pageable)
                 .map(DadosAlert::new);
     }
 
