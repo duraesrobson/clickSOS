@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import clicksos.api.dto.alert.DadosAlert;
 import clicksos.api.dto.alert.DadosCriarAlert;
-import clicksos.api.exceptions.TratarErros;
+import clicksos.api.dto.contato.DadosContato;
 import clicksos.api.model.Alert;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
@@ -28,34 +28,50 @@ public class AlertService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    StringBuilder contatosInfo = new StringBuilder();
+
+    private Usuario getUsuarioAutenticado() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByEmail(email);
+    }
+
     @Transactional
     public Alert criarAlert(DadosCriarAlert dados) {
-        Usuario usuario = usuarioRepository.findById(dados.idUsuario())
-                .orElseThrow(TratarErros.UsuarioNaoEncontrado::new);
+        Usuario usuario = getUsuarioAutenticado();
 
         Alert alert = new Alert(dados.latitude(), dados.longitude(), usuario);
 
         alert = alertaRepository.save(alert);
         String mapaLink = "https://www.google.com/maps?q=" + alert.getLatitude() + "," + alert.getLongitude();
 
-        // Enviar e-mail para os contatos
-        String mensagem = "Alerta recebido!\nLatitude: " + dados.latitude() +
+        // envia email para os contatos do usuario
+        String mensagemParaContatos = "Alerta recebido!\nLatitude: " + dados.latitude() +
                 "\nLongitude: " + dados.longitude() +
                 "\n\n" + alert.getMensagem() +
                 "\nMeu nome é " + alert.getUsuario().getNome() + "." +
-                "\nEssa é minha localização: " + mapaLink;
+                "\nMeu e-mail é " + alert.getUsuario().getEmail() + "." +
+                "\n\nEssa é a minha localização: " + mapaLink;
 
         for (Contato c : usuario.getContatos()) {
-            emailService.enviarEmail(c.getEmail(), "Novo alerta de " + alert.getUsuario().getNome() + "!", mensagem);
+            emailService.enviarEmail(c.getEmail(), "Novo alerta de " + alert.getUsuario().getNome() + "!",
+                    mensagemParaContatos);
+            // cria o to string com os contatos
+            contatosInfo.append(c.getNome()).append(" (").append(c.getEmail()).append(")\n");
         }
+
+        // envia email de confirmacao para o usuario
+        String mensagemParaUsuario = "Alerta enviado!\n\nLatitude: " + dados.latitude() +
+                "\nLongitude: " + dados.longitude() +
+                "\nLocalização: " + mapaLink +
+                "\n\nContato(s) notificado(s):\n" + contatosInfo.toString();
+
+        emailService.enviarEmail(usuario.getEmail(), "Alerta gerado!", mensagemParaUsuario);
 
         return alert;
     }
 
     public Page<DadosAlert> listarAlertsPorUsuario(Pageable pageable) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Usuario usuario = usuarioRepository.findByEmail(email);
-
+        Usuario usuario = getUsuarioAutenticado();
         return alertaRepository.findAllByUsuarioId(usuario.getId(), pageable)
                 .map(DadosAlert::new);
     }

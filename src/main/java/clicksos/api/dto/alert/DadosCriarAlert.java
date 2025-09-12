@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.NotNull;
 
 public record DadosCriarAlert(
-                @NotNull BigDecimal latitude,
-                @NotNull BigDecimal longitude,
-                @NotNull Long idUsuario) {
+        @NotNull BigDecimal latitude,
+        @NotNull BigDecimal longitude) {
 
 }

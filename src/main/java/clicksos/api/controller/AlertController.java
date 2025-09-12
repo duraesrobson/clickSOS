@@ -30,7 +30,8 @@ public class AlertController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity criarAlert(@RequestBody @Valid DadosCriarAlert dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<DadosAlert> criarAlert(@RequestBody @Valid DadosCriarAlert dados,
+            UriComponentsBuilder uriBuilder) {
         Alert alert = alertService.criarAlert(dados);
         var uri = uriBuilder.path("/alertas/{id}").buildAndExpand(alert.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosAlert(alert));
