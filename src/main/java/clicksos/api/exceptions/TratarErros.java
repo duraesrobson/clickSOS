@@ -19,4 +19,11 @@ public class TratarErros {
         }
     }
 
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Usuário não encontrado!")
+    public static class UsuarioNaoEncontrado extends RuntimeException {
+        public UsuarioNaoEncontrado() {
+            super("Usuário não encontrado!");
+        }
+    }
+
 }

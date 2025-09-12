@@ -45,6 +45,13 @@ public class GlobalExceptionHandler {
                 .body(new ErroResponse(ex.getMessage()));
     }
 
+    @ExceptionHandler(TratarErros.UsuarioNaoEncontrado.class)
+    public ResponseEntity<?> handleUsuarioNaoEncontrado(TratarErros.UsuarioNaoEncontrado ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErroResponse(ex.getMessage()));
+    }
+
     // DTO para retorno
     record ErroResponse(String mensagem) {
     }

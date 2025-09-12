@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import clicksos.api.dto.alert.DadosAlert;
 import clicksos.api.dto.alert.DadosCriarAlert;
+import clicksos.api.exceptions.TratarErros;
 import clicksos.api.model.Alert;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
@@ -30,7 +31,7 @@ public class AlertService {
     @Transactional
     public Alert criarAlert(DadosCriarAlert dados) {
         Usuario usuario = usuarioRepository.findById(dados.idUsuario())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
+                .orElseThrow(TratarErros.UsuarioNaoEncontrado::new);
 
         Alert alert = new Alert(dados.latitude(), dados.longitude(), usuario);
 
