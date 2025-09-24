@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import clicksos.api.dto.alert.DadosAlert;
 import clicksos.api.dto.alert.DadosCriarAlert;
-import clicksos.api.dto.contato.DadosContato;
 import clicksos.api.model.Alert;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
