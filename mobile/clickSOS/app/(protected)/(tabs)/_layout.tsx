@@ -21,6 +21,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="alert"
+        options={{
+          title: "Alertar",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={24} name="warning" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
