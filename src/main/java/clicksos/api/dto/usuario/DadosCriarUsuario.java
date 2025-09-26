@@ -12,12 +12,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record DadosCriarUsuario(
-                @NotBlank String nome,
-                @NotNull @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy") LocalDate dataNascimento,
-                @NotBlank String usuario,
-                @NotBlank String senha,
-                @NotBlank String confirmarSenha,
-                @NotBlank @Email String email,
-                @NotEmpty List<DadosCriarContato> contatos) {
+        @NotBlank String nome,
+        @NotNull @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy") LocalDate dataNascimento,
+        @NotBlank String senha,
+        @NotBlank String confirmarSenha,
+        @NotBlank @Email String email,
+        @NotEmpty List<DadosCriarContato> contatos) {
 
 }

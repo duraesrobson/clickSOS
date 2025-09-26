@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import clicksos.api.dto.contato.DadosCriarContato;
 import clicksos.api.dto.usuario.DadosCriarUsuario;
 import clicksos.api.dto.usuario.DadosUsuario;
+import clicksos.api.dto.usuario.DadosUsuarioApp;
 import clicksos.api.exceptions.TratarErros;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
 import clicksos.api.repository.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -36,7 +38,7 @@ public class UsuarioService {
             throw new TratarErros.SenhasNaoConferem();
         }
 
-        Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.usuario(), dados.email(),
+        Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.email(),
                 senhaCriptografada);
 
         for (DadosCriarContato c : dados.contatos()) {
@@ -45,6 +47,12 @@ public class UsuarioService {
         }
 
         return usuarioRepository.save(usuario);
+    }
+
+    public DadosUsuarioApp listarUsuarioDadosApp(Long id) {
+        return usuarioRepository.findById(id)
+                .map(DadosUsuarioApp::new)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado!"));
     }
 
     public Page<DadosUsuario> listarUsuarios(Pageable paginacao) {

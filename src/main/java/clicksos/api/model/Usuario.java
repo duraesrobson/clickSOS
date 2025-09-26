@@ -41,7 +41,6 @@ public class Usuario {
     @Column(name = "data_nascimento")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
-    private String usuario;
     private String senha;
     private String email;
     private LocalDateTime criadoEm;
@@ -55,12 +54,11 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Alert> alertas = new ArrayList<>();
 
-    public Usuario(String nome, LocalDate dataNascimento, String usuario, String email, String senha) {
+    public Usuario(String nome, LocalDate dataNascimento, String email, String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.email = email;
         this.senha = senha;
-        this.usuario = usuario;
     }
 
     public void desativarUsuario() {
