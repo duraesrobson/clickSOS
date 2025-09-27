@@ -1,8 +1,11 @@
 package clicksos.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,7 @@ import clicksos.api.dto.usuario.DadosUsuarioApp;
 import clicksos.api.exceptions.TratarErros;
 import clicksos.api.model.Contato;
 import clicksos.api.model.Usuario;
+import clicksos.api.repository.ContatoRepository;
 import clicksos.api.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -25,6 +29,14 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ContatoRepository contatoRepository;
+
+    private Usuario getUsuarioAutenticado() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByEmail(email);
+    }
 
     @Transactional
     public Usuario criaUsuario(DadosCriarUsuario dados) {
@@ -59,4 +71,28 @@ public class UsuarioService {
         return usuarioRepository.findAllByAtivoTrue(paginacao).map(DadosUsuario::new);
     }
 
+    @Transactional
+    public Usuario adicionarContato(DadosCriarContato dados) {
+        Usuario usuario = getUsuarioAutenticado();
+
+        if (usuarioRepository.findByEmail(dados.getContatos().email()) != null) {
+            throw new TratarErros.EmailJaCadastrado();
+        }
+
+        Contato contato = new Contato(dados.nome(), dados.email(), dados.telefone(), usuario);
+        usuario.getContatos().add(contato);
+
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario apagarContato(Long idContato) {
+        Usuario usuario = getUsuarioAutenticado();
+        Contato contato = contatoRepository.findById(idContato)
+                .orElseThrow(() -> new EntityNotFoundException("Contato não existe!"));
+
+        usuario.getContatos().remove(contato);
+        contatoRepository.delete(contato);
+        return usuarioRepository.save(usuario);
+    }
 }

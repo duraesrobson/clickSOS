@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class TratarErros {
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Email já cadastrado")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Email já cadastrado!")
     public static class EmailJaCadastrado extends RuntimeException {
         public EmailJaCadastrado() {
-            super("Email já cadastrado");
+            super("Email já cadastrado!");
         }
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Senhas não conferem")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Senhas não conferem!")
     public static class SenhasNaoConferem extends RuntimeException {
         public SenhasNaoConferem() {
             super("Senhas não conferem");
