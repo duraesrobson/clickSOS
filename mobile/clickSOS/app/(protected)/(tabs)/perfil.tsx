@@ -49,6 +49,27 @@ export default function Perfil() {
     fetchData();
   }, [token]);
 
+  // funcao para apagar contato pelo id
+  const deletarContato = async (id: number) => {
+    try {
+      const response = await fetch(
+        `http://192.168.126.218:8080/usuarios/me/contatos/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+      );
+
+      if (response.ok) {
+        setContatos(contatos.filter((c) => c.id !== id));
+      } else {
+        Alert.alert("Erro", "Não foi possível excluir o contato.");
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Erro na exclusão.")
+    }
+  };
+
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-100">
@@ -81,7 +102,7 @@ export default function Perfil() {
         ) : (
           contatos.map((item, index) => (
             <View
-              key={item.id ?? index} // <- garante key única
+              key={item.id ?? index} // garante id único
               className="flex-row justify-between p-2 bg-gray-100 rounded mb-2"
             >
               <Text>
@@ -89,9 +110,25 @@ export default function Perfil() {
                 Email: {item.email} {"\n"}
                 Telefone: {item.telefone}
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  Alert.alert(
+                    "Confirmar Exclusão",
+                    `Deseja realmente excluir o contato "${item.nome}"?`,
+                    [
+                      { text: "Cancelar", style: "cancel" },
+                      {
+                        text: "Excluir",
+                        style: "destructive",
+                        onPress: () => deletarContato(item.id),
+                      },
+                    ]
+                  )
+                }
+              >
                 <Text className="text-red-600">Excluir</Text>
               </TouchableOpacity>
+
             </View>
           ))
         )}
@@ -127,6 +164,6 @@ export default function Perfil() {
       >
         <Text className="text-white font-semibold text-center">Sair</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </ScrollView >
   );
 }
