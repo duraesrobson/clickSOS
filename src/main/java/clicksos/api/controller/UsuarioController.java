@@ -67,9 +67,9 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/me/contatos/{idContato}")
-    public ResponseEntity<DadosUsuarioApp> apagarContato(@PathVariable Long idContato) {
-        Usuario usuarioAtualizado = usuarioService.apagarContato(idContato);
-        return ResponseEntity.ok(new DadosUsuarioApp(usuarioAtualizado));
+    public ResponseEntity<Void> apagarContato(@PathVariable Long idContato) {
+        usuarioService.apagarContato(idContato);
+        return ResponseEntity.noContent().build();
     }
 
 }

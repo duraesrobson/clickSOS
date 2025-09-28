@@ -1,7 +1,5 @@
 package clicksos.api.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -75,7 +73,10 @@ public class UsuarioService {
     public Usuario adicionarContato(DadosCriarContato dados) {
         Usuario usuario = getUsuarioAutenticado();
 
-        if (usuarioRepository.findByEmail(dados.getContatos().email()) != null) {
+        boolean contatoExiste = usuario.getContatos().stream()
+                .anyMatch(c -> c.getEmail().equalsIgnoreCase(dados.email()));
+
+        if (contatoExiste) {
             throw new TratarErros.EmailJaCadastrado();
         }
 
