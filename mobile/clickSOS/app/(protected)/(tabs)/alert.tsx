@@ -29,7 +29,7 @@ export default function Alertar() {
       const { latitude, longitude } = location.coords;
 
       // Faz o POST no backend
-      const response = await fetch("http://192.168.126.218:8080/alertas", {
+      const response = await fetch("http://192.168.47.218:8080/alertas", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

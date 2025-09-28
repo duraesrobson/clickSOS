@@ -19,6 +19,33 @@ export default function Perfil() {
   const [alertas, setAlertas] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [novoContato, setNovoContato] = useState({ nome: "", email: "", telefone: "" });
+  const [pagina, setPagina] = useState(0);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  // função para buscar alertas paginados
+  const fetchAlertas = async (paginaAtual = 0) => {
+    try {
+      setLoading(true);
+      const res = await fetch(`http://192.168.47.218:8080/alertas/meus-alertas?page=${paginaAtual}&size=10`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+
+      if (paginaAtual === 0) {
+        setAlertas(data.content);
+      } else {
+        setAlertas(prev => [...prev, ...data.content]);
+      }
+
+      setPagina(data.number);
+      setTotalPaginas(data.totalPages);
+    } catch (err) {
+      console.log(err);
+      Alert.alert("Erro", "Não foi possível carregar os alertas.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!token) return;
@@ -35,13 +62,8 @@ export default function Perfil() {
         setUsuario(userData);
         setContatos(userData.contatos || []);
 
-        // get alertas do usuario pela api
-        const alertRes = await fetch(
-          "http://192.168.47.218:8080/alertas/meus-alertas",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const alertData = await alertRes.json();
-        setAlertas(alertData.content || []);
+        // get alertas do usuario pela api (primeira página)
+        await fetchAlertas(0);
       } catch (error) {
         console.log(error);
         Alert.alert("Erro", "Não foi possível carregar os dados.");
@@ -116,7 +138,6 @@ export default function Perfil() {
     }
   };
 
-
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-100">
@@ -149,7 +170,7 @@ export default function Perfil() {
         ) : (
           contatos.map((item, index) => (
             <View
-              key={item.id ?? index} // garante id único
+              key={item.id ? String(item.id) : `temp-${index}`} // garante sempre único              
               className="flex-row justify-between p-2 bg-gray-100 rounded mb-2"
             >
               <Text>
@@ -175,7 +196,6 @@ export default function Perfil() {
               >
                 <Text className="text-red-600">Excluir</Text>
               </TouchableOpacity>
-
             </View>
           ))
         )}
@@ -229,17 +249,39 @@ export default function Perfil() {
         {alertas.length === 0 ? (
           <Text>Nenhum alerta gerado.</Text>
         ) : (
-          alertas.map((item, index) => (
-            <View
-              key={String(item.id)} // garante key única
-              className="flex-col p-2 bg-gray-100 rounded mb-2"
-            >
-              <Text className="font-bold">{item.criadoEm}</Text>
-              <Text className="text-sm text-gray-600">Enviado para: {item.usuario.email}</Text>
+          <>
+            {alertas.map((item, index) => (
+              <View key={item.id ? String(item.id) : `alert-${index}`} className="flex-col p-2 bg-gray-100 rounded mb-2">
+                <Text className="font-bold">Enviado em: {item.criadoEm}h</Text>
+                <Text className="text-sm text-gray-600">
+                  Enviado para:{""}
+                  {item.contatos.map((c: { email: string }) => c.email).join(", ")}
+                </Text>
+              </View>
+            ))}
+
+            <View className="flex-row justify-between mt-2">
+              {pagina > 0 && (
+                <TouchableOpacity
+                  className="bg-gray-400 p-2 rounded"
+                  onPress={() => fetchAlertas(pagina - 1)}
+                >
+                  <Text className="text-white font-semibold text-center">{"<"}</Text>
+                </TouchableOpacity>
+              )}
+              {pagina + 1 < totalPaginas && (
+                <TouchableOpacity
+                  className="bg-blue-600 p-2 rounded"
+                  onPress={() => fetchAlertas(pagina + 1)}
+                >
+                  <Text className="text-white font-semibold text-center">{">"}</Text>
+                </TouchableOpacity>
+              )}
             </View>
-          ))
+          </>
         )}
       </View>
+
 
       {/* BOTÃO SAIR */}
       <TouchableOpacity
@@ -248,6 +290,6 @@ export default function Perfil() {
       >
         <Text className="text-white font-semibold text-center">Sair</Text>
       </TouchableOpacity>
-    </ScrollView >
+    </ScrollView>
   );
 }
