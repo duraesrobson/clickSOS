@@ -70,7 +70,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario adicionarContato(DadosCriarContato dados) {
+    public Contato adicionarContato(DadosCriarContato dados) {
         Usuario usuario = getUsuarioAutenticado();
 
         boolean contatoExiste = usuario.getContatos().stream()
@@ -83,7 +83,8 @@ public class UsuarioService {
         Contato contato = new Contato(dados.nome(), dados.email(), dados.telefone(), usuario);
         usuario.getContatos().add(contato);
 
-        return usuarioRepository.save(usuario);
+        usuarioRepository.save(usuario);
+        return contato;
     }
 
     @Transactional

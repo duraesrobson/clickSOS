@@ -3,6 +3,7 @@ package clicksos.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class AlertController {
 
     @GetMapping("/meus-alertas")
     public ResponseEntity<Page<DadosAlert>> listarAlertasPorUsuario(
-            @PageableDefault(size = 10) Pageable paginacao) {
+            @PageableDefault(size = 10, sort = "criadoEm", direction = Sort.Direction.DESC) Pageable paginacao) {
         var page = alertService.listarAlertsPorUsuario(paginacao);
         return ResponseEntity.ok(page);
     }

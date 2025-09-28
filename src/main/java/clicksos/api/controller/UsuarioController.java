@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import clicksos.api.config.UsuarioSecurity;
+import clicksos.api.dto.contato.DadosContato;
 import clicksos.api.dto.contato.DadosCriarContato;
 import clicksos.api.dto.usuario.DadosCriarUsuario;
 import clicksos.api.dto.usuario.DadosUsuario;
 import clicksos.api.dto.usuario.DadosUsuarioApp;
-import clicksos.api.model.Usuario;
+import clicksos.api.model.Contato;
 import clicksos.api.service.UsuarioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -61,9 +62,9 @@ public class UsuarioController {
 
     // adicionar um novo contato
     @PostMapping("/me/contatos")
-    public ResponseEntity<DadosUsuarioApp> adicionarContato(@RequestBody DadosCriarContato dados) {
-        Usuario usuario = usuarioService.adicionarContato(dados);
-        return ResponseEntity.ok(new DadosUsuarioApp(usuario));
+    public ResponseEntity<DadosContato> adicionarContato(@RequestBody DadosCriarContato dados) {
+        Contato contato = usuarioService.adicionarContato(dados);
+        return ResponseEntity.ok(new DadosContato(contato));
     }
 
     @DeleteMapping("/me/contatos/{idContato}")
