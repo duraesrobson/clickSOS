@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Modal,
+  TextInput,
   ScrollView,
 } from "react-native";
 import { useAuth } from "../../utils/authContext";
@@ -15,6 +17,8 @@ export default function Perfil() {
   const [usuario, setUsuario] = useState<any>(null);
   const [contatos, setContatos] = useState<any[]>([]);
   const [alertas, setAlertas] = useState<any[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [novoContato, setNovoContato] = useState({ nome: "", email: "", telefone: "" });
 
   useEffect(() => {
     if (!token) return;
@@ -24,7 +28,7 @@ export default function Perfil() {
         setLoading(true);
 
         // get dados do usuario pela api
-        const userRes = await fetch("http://192.168.126.218:8080/usuarios/me", {
+        const userRes = await fetch("http://192.168.47.218:8080/usuarios/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData = await userRes.json();
@@ -33,7 +37,7 @@ export default function Perfil() {
 
         // get alertas do usuario pela api
         const alertRes = await fetch(
-          "http://192.168.126.218:8080/alertas/meus-alertas",
+          "http://192.168.47.218:8080/alertas/meus-alertas",
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const alertData = await alertRes.json();
@@ -53,7 +57,7 @@ export default function Perfil() {
   const deletarContato = async (id: number) => {
     try {
       const response = await fetch(
-        `http://192.168.126.218:8080/usuarios/me/contatos/${id}`, {
+        `http://192.168.47.218:8080/usuarios/me/contatos/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -69,6 +73,49 @@ export default function Perfil() {
       Alert.alert("Erro na exclusão.")
     }
   };
+
+  //funcao para adicionar contato
+  const salvarContato = async () => {
+    const { nome, email, telefone } = novoContato;
+    if (!nome || !email || !telefone) {
+      Alert.alert("Erro", "Preencha todos os campos");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://192.168.47.218:8080/usuarios/me/contatos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(novoContato),
+      });
+
+      if (response.ok) {
+        const contatoCriado = await response.json();
+        setContatos([...contatos, contatoCriado]);
+        setModalVisible(false);
+        setNovoContato({ nome: "", email: "", telefone: "" });
+      } else {
+        let errorMsg = "Não foi possível adicionar o contato.";
+        try {
+          //pega o erro mostrado pelo backend
+          const errorData = await response.json();
+          errorMsg = errorData.mensagem || errorMsg;
+        } catch {
+          try {
+            errorMsg = await response.text();
+          } catch { }
+        }
+        Alert.alert("Erro", errorMsg);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Erro ao adicionar contato.");
+    }
+  };
+
 
   if (loading) {
     return (
@@ -132,12 +179,49 @@ export default function Perfil() {
             </View>
           ))
         )}
-        <TouchableOpacity className="mt-2 bg-green-600 p-2 rounded">
+        <TouchableOpacity className="mt-2 bg-green-600 p-2 rounded" onPress={() => setModalVisible(true)}>
           <Text className="text-white text-center font-semibold">
             Adicionar Contato
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* modal para adicionar contato */}
+      <Modal visible={modalVisible} transparent animationType="slide">
+        <View className="flex-1 justify-center items-center bg-black/50 p-4">
+          <View className="bg-white w-full p-4 rounded-xl">
+            <Text className="text-xl font-bold mb-2">Novo Contato</Text>
+            <TextInput
+              placeholder="Nome"
+              className="border border-gray-300 rounded p-2 mb-2"
+              value={novoContato.nome}
+              onChangeText={(text) => setNovoContato({ ...novoContato, nome: text })}
+            />
+            <TextInput
+              placeholder="Email"
+              className="border border-gray-300 rounded p-2 mb-2"
+              keyboardType="email-address"
+              value={novoContato.email}
+              onChangeText={(text) => setNovoContato({ ...novoContato, email: text })}
+            />
+            <TextInput
+              placeholder="Telefone"
+              className="border border-gray-300 rounded p-2 mb-4"
+              keyboardType="phone-pad"
+              value={novoContato.telefone}
+              onChangeText={(text) => setNovoContato({ ...novoContato, telefone: text })}
+            />
+            <View className="flex-row justify-end space-x-2">
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text className="text-gray-600 font-semibold">Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={salvarContato}>
+                <Text className="text-green-600 font-semibold">Salvar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* ALERTAS */}
       <View className="bg-white p-4 rounded-xl shadow mb-4">
@@ -147,7 +231,7 @@ export default function Perfil() {
         ) : (
           alertas.map((item, index) => (
             <View
-              key={item.id ?? index} // <- garante key única
+              key={String(item.id)} // garante key única
               className="flex-col p-2 bg-gray-100 rounded mb-2"
             >
               <Text className="font-bold">{item.criadoEm}</Text>

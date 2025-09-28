@@ -18,7 +18,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       // link da api (atualmente rodando localhost)
-      const response = await fetch("http://192.168.126.218:8080/login", {
+      const response = await fetch("http://192.168.47.218:8080/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
