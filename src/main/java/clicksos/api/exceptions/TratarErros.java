@@ -8,7 +8,7 @@ public class TratarErros {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Email já cadastrado!")
     public static class EmailJaCadastrado extends RuntimeException {
         public EmailJaCadastrado() {
-            super("Email já cadastrado!");
+            super("Email de usuário já cadastrado!");
         }
     }
 
