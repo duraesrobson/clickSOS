@@ -18,7 +18,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       // link da api (atualmente rodando localhost)
-      const response = await fetch("http://192.168.47.218:8080/login", {
+      const response = await fetch("http://192.168.108.218:8080/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -34,7 +34,7 @@ export default function Login() {
       await login(data.token);
       router.replace("/(protected)");
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível conectar ao backend.");
+      Alert.alert("Erro", `Não foi possível conectar ao backend. Erro: ${error}`);
     }
   };
 
@@ -67,6 +67,15 @@ export default function Login() {
         >
           <Text className="text-white text-center font-semibold text-lg">
             Entrar
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => router.push("/cadastro")}
+          className="mt-4"
+        >
+          <Text className="text-blue-600 text-center font-semibold">
+            Não tem uma conta? Cadastre-se
           </Text>
         </TouchableOpacity>
       </View>
