@@ -9,6 +9,7 @@ import {
 import { useRouter } from "expo-router";
 import { useAuth } from "./utils/authContext";
 import { API_URL } from "@env";
+import Logo from "../assets/imgs/logo-click-og.svg";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -42,9 +43,9 @@ export default function Login() {
   return (
     <View className="flex-1 justify-center items-center bg-gray-100 p-6">
       <View className="bg-white w-full p-6 rounded-2xl shadow-lg">
-        <Text className="text-2xl font-bold text-center mb-6 text-blue-600">
-          ClickSOS
-        </Text>
+        <View className="flex-auto pb-4 justify-center items-center">
+          <Logo width={250} height={100} />
+        </View>
 
         <TextInput
           placeholder="Email"
@@ -64,7 +65,7 @@ export default function Login() {
 
         <TouchableOpacity
           onPress={handleLogin}
-          className="bg-blue-600 py-3 rounded-xl"
+          className="bg-blue py-3 rounded-xl"
         >
           <Text className="text-white text-center font-semibold text-lg">
             Entrar
@@ -75,7 +76,7 @@ export default function Login() {
           onPress={() => router.push("/cadastro")}
           className="mt-4"
         >
-          <Text className="text-blue-600 text-center font-semibold">
+          <Text className="text-red text-center font-semibold">
             Não tem uma conta? Cadastre-se
           </Text>
         </TouchableOpacity>
