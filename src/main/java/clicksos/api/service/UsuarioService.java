@@ -82,8 +82,9 @@ public class UsuarioService {
 
         Contato contato = new Contato(dados.nome(), dados.email(), dados.telefone(), usuario);
         usuario.getContatos().add(contato);
-
+        contato = contatoRepository.save(contato);
         usuarioRepository.save(usuario);
+
         return contato;
     }
 
