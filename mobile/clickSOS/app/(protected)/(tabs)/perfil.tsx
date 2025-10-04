@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useAuth } from "../../utils/authContext";
+import { API_URL } from "@env";
 
 export default function Perfil() {
   const { token, logout } = useAuth();
@@ -26,7 +27,7 @@ export default function Perfil() {
   const fetchAlertas = async (paginaAtual = 0) => {
     try {
       setLoading(true);
-      const res = await fetch(`http://192.168.108.218:8080/alertas/meus-alertas?page=${paginaAtual}&size=10`, {
+      const res = await fetch(`${API_URL}/alertas/meus-alertas?page=${paginaAtual}&size=10`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -55,7 +56,7 @@ export default function Perfil() {
         setLoading(true);
 
         // get dados do usuario pela api
-        const userRes = await fetch("http://192.168.108.218:8080/usuarios/me", {
+        const userRes = await fetch(`${API_URL}/usuarios/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData = await userRes.json();
@@ -79,7 +80,7 @@ export default function Perfil() {
   const deletarContato = async (id: number) => {
     try {
       const response = await fetch(
-        `http://192.168.108.218:8080/usuarios/me/contatos/${id}`, {
+        `${API_URL}/usuarios/me/contatos/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -105,7 +106,7 @@ export default function Perfil() {
     }
 
     try {
-      const response = await fetch("http://192.168.108.218:8080/usuarios/me/contatos", {
+      const response = await fetch(`${API_URL}/usuarios/me/contatos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import * as Location from "expo-location";
 import { useAuth } from "../../utils/authContext";
-
+import { API_URL } from "@env";
 export default function Alertar() {
   const { token, logout } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export default function Alertar() {
       const { latitude, longitude } = location.coords;
 
       // Faz o POST no backend
-      const response = await fetch("http://192.168.47.218:8080/alertas", {
+      const response = await fetch(`${API_URL}/alertas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

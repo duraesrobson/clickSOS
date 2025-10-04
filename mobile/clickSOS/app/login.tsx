@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "./utils/authContext";
+import { API_URL } from "@env";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       // link da api (atualmente rodando localhost)
-      const response = await fetch("http://192.168.108.218:8080/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),

@@ -8,6 +8,7 @@ import {
     ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { API_URL } from "@env";
 
 export default function Cadastro() {
     const router = useRouter();
@@ -36,7 +37,7 @@ export default function Cadastro() {
         };
 
         try {
-            const response = await fetch("http://192.168.108.218:8080/usuarios", {
+            const response = await fetch(`${API_URL}/usuarios`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
