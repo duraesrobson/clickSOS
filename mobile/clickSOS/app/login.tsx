@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { useAuth } from "./utils/authContext";
 import { API_URL } from "@env";
 import Logo from "../assets/imgs/logo-click-og.svg";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -41,10 +42,16 @@ export default function Login() {
   };
 
   return (
-    <View className="flex-1 justify-center items-center bg-gray-100 p-6">
-      <View className="bg-white w-full p-6 rounded-2xl shadow-lg">
-        <View className="flex-auto pb-4 justify-center items-center">
-          <Logo width={250} height={100} />
+    <LinearGradient
+      colors={["#e8f2f8", "#fdf0d5"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      className="flex-1 justify-center items-center p-6"
+    >
+      <View className="w-full p-6 rounded-2xl">
+        <View className="flex-auto pb-10 justify-center items-center">
+          <Logo width={280} height={100} />
+          <Text>Um clique. Um alerta. <Text className="text-blue font-extrabold">Uma vida protegida.</Text></Text>
         </View>
 
         <TextInput
@@ -76,11 +83,11 @@ export default function Login() {
           onPress={() => router.push("/cadastro")}
           className="mt-4"
         >
-          <Text className="text-red text-center font-semibold">
-            Não tem uma conta? Cadastre-se
+          <Text className="text-center">
+            Não tem uma conta? <Text className="text-red font-semibold">Cadastre-se</Text>
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
