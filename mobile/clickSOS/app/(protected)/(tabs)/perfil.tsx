@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-  Modal,
-  TextInput,
-  ScrollView,
-} from "react-native";
+import { View, ActivityIndicator, Alert, ScrollView, TouchableOpacity, Text } from "react-native";
 import { useAuth } from "../../utils/authContext";
 import { API_URL } from "@env";
+import { StatusBar } from "expo-status-bar";
+import { LinearGradient } from "expo-linear-gradient";
+// Importa os novos componentes:
+import PerfilCard from "../../../components/PerfilCard";
+import ContatosCard from "../../../components/ContatosCard";
+import AlertsCard from "../../../components/AlertsCard";
 
 export default function Perfil() {
   const { token, logout } = useAuth();
@@ -18,12 +15,15 @@ export default function Perfil() {
   const [usuario, setUsuario] = useState<any>(null);
   const [contatos, setContatos] = useState<any[]>([]);
   const [alertas, setAlertas] = useState<any[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
   const [novoContato, setNovoContato] = useState({ nome: "", email: "", telefone: "" });
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(1);
+  // Removida a modalVisible, pois ela será interna ao ContactsCard
 
-  // função para buscar alertas paginados
+  // ... (função fetchAlertas, useEffect fetchData, deletarContato e salvarContato permanecem aqui)
+  // ... (todas as suas funções de lógica devem permanecer no Perfil.tsx)
+
+  // função para buscar alertas paginados (MANTIDA NO COMPONENTE PAI)
   const fetchAlertas = async (paginaAtual = 0) => {
     try {
       setLoading(true);
@@ -76,7 +76,7 @@ export default function Perfil() {
     fetchData();
   }, [token]);
 
-  // funcao para apagar contato pelo id
+  // funcao para apagar contato pelo id (MANTIDA NO COMPONENTE PAI)
   const deletarContato = async (id: number) => {
     try {
       const response = await fetch(
@@ -97,7 +97,7 @@ export default function Perfil() {
     }
   };
 
-  //funcao para adicionar contato
+  //funcao para adicionar contato (MANTIDA NO COMPONENTE PAI)
   const salvarContato = async () => {
     const { nome, email, telefone } = novoContato;
     if (!nome || !email || !telefone) {
@@ -118,12 +118,10 @@ export default function Perfil() {
       if (response.ok) {
         const contatoCriado = await response.json();
         setContatos([...contatos, contatoCriado]);
-        setModalVisible(false);
         setNovoContato({ nome: "", email: "", telefone: "" });
       } else {
         let errorMsg = "Não foi possível adicionar o contato.";
         try {
-          //pega o erro mostrado pelo backend
           const errorData = await response.json();
           errorMsg = errorData.mensagem || errorMsg;
         } catch {
@@ -139,158 +137,54 @@ export default function Perfil() {
     }
   };
 
-  if (loading) {
+
+  if (loading && !usuario) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-100">
-        <ActivityIndicator size="large" color="blue" />
+        <ActivityIndicator size="large" color="#1e6ba5" />
       </View>
     );
   }
 
   return (
-    <ScrollView className="flex-1 bg-gray-100 p-4">
-      {/* PERFIL */}
-      <View className="bg-white p-4 rounded-xl shadow mb-4">
-        <Text className="text-xl font-bold text-blue-600 mb-2">Perfil</Text>
+    <LinearGradient
+      colors={["#e8f2f8", "#fdf0d5"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      className="flex-1"
+    >
+      <ScrollView className="flex-1 p-4 mt-11">
+        <StatusBar style="dark" />
+
+        {/* PERFIL (Usando PerfilCard) */}
         {usuario ? (
-          <>
-            <Text>Nome: {usuario.nome}</Text>
-            <Text>Email: {usuario.email}</Text>
-            <Text>Data de Nascimento: {usuario.dataNascimento}</Text>
-          </>
+          <PerfilCard
+            nome={usuario.nome}
+            email={usuario.email}
+            dataNascimento={usuario.dataNascimento}
+          />
         ) : (
-          <Text>Carregando perfil...</Text>
+          <ActivityIndicator size="small" color="#1e6ba5" />
         )}
-      </View>
 
-      {/* CONTATOS */}
-      <View className="bg-white p-4 rounded-xl shadow mb-4">
-        <Text className="text-xl font-bold text-blue-600 mb-2">Contatos</Text>
-        {contatos.length === 0 ? (
-          <Text>Nenhum contato cadastrado.</Text>
-        ) : (
-          contatos.map((item, index) => (
-            <View
-              key={item.id ? String(item.id) : `temp-${index}`} // garante sempre único              
-              className="flex-row justify-between p-2 bg-gray-100 rounded mb-2"
-            >
-              <Text>
-                <Text className="font-bold">{item.nome}</Text> {"\n"}
-                Email: {item.email} {"\n"}
-                Telefone: {item.telefone}
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  Alert.alert(
-                    "Confirmar Exclusão",
-                    `Deseja realmente excluir o contato "${item.nome}"?`,
-                    [
-                      { text: "Cancelar", style: "cancel" },
-                      {
-                        text: "Excluir",
-                        style: "destructive",
-                        onPress: () => deletarContato(item.id),
-                      },
-                    ]
-                  )
-                }
-              >
-                <Text className="text-red-600">Excluir</Text>
-              </TouchableOpacity>
-            </View>
-          ))
-        )}
-        <TouchableOpacity className="mt-2 bg-green-600 p-2 rounded" onPress={() => setModalVisible(true)}>
-          <Text className="text-white text-center font-semibold">
-            Adicionar Contato
-          </Text>
-        </TouchableOpacity>
-      </View>
+        {/* CONTATOS (Usando ContatosCard) */}
+        <ContatosCard
+          contatos={contatos}
+          deletarContato={deletarContato}
+          salvarContato={salvarContato}
+          novoContato={novoContato}
+          setNovoContato={setNovoContato}
+        />
 
-      {/* modal para adicionar contato */}
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View className="flex-1 justify-center items-center bg-black/50 p-4">
-          <View className="bg-white w-full p-4 rounded-xl">
-            <Text className="text-xl font-bold mb-2">Novo Contato</Text>
-            <TextInput
-              placeholder="Nome"
-              className="border border-gray-300 rounded p-2 mb-2"
-              value={novoContato.nome}
-              onChangeText={(text) => setNovoContato({ ...novoContato, nome: text })}
-            />
-            <TextInput
-              placeholder="Email"
-              className="border border-gray-300 rounded p-2 mb-2"
-              keyboardType="email-address"
-              value={novoContato.email}
-              onChangeText={(text) => setNovoContato({ ...novoContato, email: text })}
-            />
-            <TextInput
-              placeholder="Telefone"
-              className="border border-gray-300 rounded p-2 mb-4"
-              keyboardType="phone-pad"
-              value={novoContato.telefone}
-              onChangeText={(text) => setNovoContato({ ...novoContato, telefone: text })}
-            />
-            <View className="flex-row justify-end space-x-2">
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text className="text-gray-600 font-semibold">Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={salvarContato}>
-                <Text className="text-green-600 font-semibold">Salvar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      {/* ALERTAS */}
-      <View className="bg-white p-4 rounded-xl shadow mb-4">
-        <Text className="text-xl font-bold text-blue-600 mb-2">Meus Alertas</Text>
-        {alertas.length === 0 ? (
-          <Text>Nenhum alerta gerado.</Text>
-        ) : (
-          <>
-            {alertas.map((item, index) => (
-              <View key={item.id ? String(item.id) : `alert-${index}`} className="flex-col p-2 bg-gray-100 rounded mb-2">
-                <Text className="font-bold">Enviado em: {item.criadoEm}h</Text>
-                <Text className="text-sm text-gray-600">
-                  Enviado para:{""}
-                  {item.contatos.map((c: { email: string }) => c.email).join(", ")}
-                </Text>
-              </View>
-            ))}
-
-            <View className="flex-row justify-between mt-2">
-              {pagina > 0 && (
-                <TouchableOpacity
-                  className="bg-gray-400 p-2 rounded"
-                  onPress={() => fetchAlertas(pagina - 1)}
-                >
-                  <Text className="text-white font-semibold text-center">{"<"}</Text>
-                </TouchableOpacity>
-              )}
-              {pagina + 1 < totalPaginas && (
-                <TouchableOpacity
-                  className="bg-blue-600 p-2 rounded"
-                  onPress={() => fetchAlertas(pagina + 1)}
-                >
-                  <Text className="text-white font-semibold text-center">{">"}</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </>
-        )}
-      </View>
-
-
-      {/* BOTÃO SAIR */}
-      <TouchableOpacity
-        onPress={logout}
-        className="bg-red-600 px-6 py-3 rounded-xl mb-6"
-      >
-        <Text className="text-white font-semibold text-center">Sair</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {/* ALERTAS (Usando AlertsCard) */}
+        <AlertsCard
+          alertas={alertas}
+          loading={loading}
+          pagina={pagina}
+          totalPaginas={totalPaginas}
+          fetchAlertas={fetchAlertas}
+        />
+      </ScrollView>
+    </LinearGradient>
   );
 }
