@@ -58,6 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="alert"
         options={{
+          headerShown: false,
           title: "Alertar",
           tabBarActiveTintColor: "black",
           tabBarIcon: () => (
@@ -69,6 +70,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="perfil"
         options={{
+          headerShown: false,
           title: "Perfil",
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" size={25} color={color} />

@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Text, TouchableOpacity, Alert, ActivityIndicator, Animated, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Alert, ActivityIndicator, ScrollView } from "react-native";
 import * as Location from "expo-location";
 import * as Haptics from "expo-haptics";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "../../utils/authContext";
 import { API_URL } from "@env";
+import InfoCard from "../../../components/InfoCard";
 
 export default function Alertar() {
   const { token, logout } = useAuth();
@@ -14,11 +15,7 @@ export default function Alertar() {
   const [locationText, setLocationText] = useState("Obtendo localização...");
   const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const successAnim = useRef(new Animated.Value(0)).current;
-
-  // 🔹 Obtém a localização automaticamente ao entrar na tela
+  // obtém a localização automaticamente ao entrar na tela
   useEffect(() => {
     const getLocation = async () => {
       try {
@@ -33,7 +30,7 @@ export default function Alertar() {
         setCoords({ latitude, longitude });
         setLocationText(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)}`);
       } catch (err) {
-        console.log(err);
+        console.log("Erro ao obter localização inicial:", err);
         setLocationText("Erro ao obter localização");
       }
     };
@@ -41,19 +38,7 @@ export default function Alertar() {
     getLocation();
   }, []);
 
-  // 🔹 Animação pulsante
-  useEffect(() => {
-    if (!alertSent) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 1.15, duration: 1500, useNativeDriver: true }),
-          Animated.timing(pulseAnim, { toValue: 1, duration: 1500, useNativeDriver: true }),
-        ])
-      ).start();
-    }
-  }, [alertSent]);
-
-  // 🔹 Botão SOS envia localização
+  // botão SOS envia localização
   const handleDispararAlerta = async () => {
     if (!token) {
       Alert.alert("Erro", "Você não está autenticado.");
@@ -63,7 +48,7 @@ export default function Alertar() {
     setLoading(true);
 
     try {
-      // Se ainda não tiver localização, tenta buscar
+      // tenta usar a localização existente ou busca uma nova se necessário
       let latitude = coords?.latitude;
       let longitude = coords?.longitude;
 
@@ -75,16 +60,17 @@ export default function Alertar() {
         setLocationText(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)}`);
       }
 
-      // Feedback tátil
+      // verifica se a localização foi obtida com sucesso
+      if (!latitude || !longitude) {
+        Alert.alert("Erro de Localização", "Não foi possível obter sua localização para enviar o alerta.");
+        setLoading(false);
+        return;
+      }
+
+      // feedback tátil
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-      // Animação de clique
-      Animated.sequence([
-        Animated.timing(scaleAnim, { toValue: 0.9, duration: 100, useNativeDriver: true }),
-        Animated.timing(scaleAnim, { toValue: 1, duration: 100, useNativeDriver: true }),
-      ]).start();
-
-      // Faz o POST no backend
+      // faz o POST no backend
       const response = await fetch(`${API_URL}/alertas`, {
         method: "POST",
         headers: {
@@ -96,26 +82,27 @@ export default function Alertar() {
 
       if (!response.ok) {
         const msg = await response.text();
-        Alert.alert("Erro", msg);
+        Alert.alert("Erro", msg || "Erro desconhecido ao enviar alerta.");
         setLoading(false);
         return;
       }
 
+      // sucesso e feedback
       setAlertSent(true);
-      Animated.timing(successAnim, { toValue: 1, duration: 500, useNativeDriver: true }).start();
 
       setTimeout(() => {
-        Animated.timing(successAnim, { toValue: 0, duration: 300, useNativeDriver: true }).start(() =>
-          setAlertSent(false)
-        );
+        setAlertSent(false);
       }, 3000);
 
       Alert.alert("Sucesso", "Alerta enviado com sucesso!");
     } catch (error) {
-      console.log(error);
-      Alert.alert("Erro", "Não foi possível conectar ao backend.");
+      console.log("Erro no envio do alerta:", error);
+      Alert.alert("Erro", "Não foi possível conectar ao backend ou houve falha na requisição.");
     } finally {
-      setLoading(false);
+      // garante que o loading para se o alerta falhar
+      if (!alertSent) {
+        setLoading(false);
+      }
     }
   };
 
@@ -126,91 +113,61 @@ export default function Alertar() {
       end={{ x: 0, y: 1 }}
       className="flex-1"
     >
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       <ScrollView
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: 40}}
-      showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 50, paddingTop:30, alignItems: 'center' }}
+        showsVerticalScrollIndicator={false}
       >
         {/* HEADER */}
-        <View className="pt-12 pb-6 px-6 rounded-b-3xl">
-          <Text className="text-3xl font-bold text-white mb-2">Alerta de Emergência</Text>
-          <Text className="text-white/90 text-base">Pressione o botão em caso de emergência</Text>
+        <View className="pt-12 pb-6 px-6 w-full items-center">
+          <Text className="text-3xl font-bold text-[#db2b39] mb-2">Alerta de Emergência</Text>
+          <Text className="text-gray-700 text-base">Pressione o botão em caso de emergência</Text>
         </View>
 
-        <View className="flex-1 justify-center items-center px-6">
+        {/* BODY */}
+        <View className="flex-1 justify-center items-center px-6 w-full">
           {/* BOTÃO SOS */}
-          <View className="items-center mb-12">
-            {!alertSent && (
-              <Animated.View
-                style={{
-                  transform: [{ scale: pulseAnim }],
-                  position: "absolute",
-                  width: 280,
-                  height: 280,
-                  borderRadius: 140,
-                  backgroundColor: "#db2b39",
-                  opacity: 0.2,
-                }}
-              />
-            )}
-
+          <View className="items-center p-6">
             <TouchableOpacity
               onPress={handleDispararAlerta}
               disabled={loading || alertSent}
-              activeOpacity={0.8}
-            >
-              <Animated.View
-                style={{ transform: [{ scale: scaleAnim }] }}
-                className={`w-64 h-64 rounded-full items-center justify-center shadow-2xl ${
-                  alertSent ? "bg-gray-600/40" : "bg-[#db2b39]"
+              // activeOpacity garante que o botão "afunde" ao ser clicado
+              activeOpacity={0.7}
+              className={`w-44 h-44 rounded-full items-center justify-center shadow-2xl ${alertSent ? "bg-blue" : "bg-red"
                 }`}
-              >
-                {loading ? (
-                  <ActivityIndicator size="large" color="#fdf0d5" />
-                ) : alertSent ? (
-                  <Animated.View style={{ opacity: successAnim }}>
-                    <Text className="text-white text-2xl font-bold mt-4">ENVIADO</Text>
-                  </Animated.View>
-                ) : (
-                  <Text className="text-white text-2xl font-bold mt-4">SOS</Text>
-                )}
-              </Animated.View>
+            >
+              {loading ? (
+                <ActivityIndicator size="large" color="#fdf0d5" />
+              ) : alertSent ? (
+                <View>
+                  <Text className="text-white text-xl font-bold">ENVIADO</Text>
+                </View>
+              ) : (
+                <Text className="text-white text-3xl font-bold">SOS</Text>
+              )}
             </TouchableOpacity>
           </View>
 
-          {/* LOCALIZAÇÃO */}
-          <View className="bg-white rounded-3xl p-6 w-full shadow-lg">
-            <View className="flex-row items-center mb-3">
-              <Text className="text-lg font-bold text-[#1e6ba5] ml-3">Sua Localização</Text>
-            </View>
+          {/* LOCALIZAÇÃO (Usando o InfoCard) */}
+          <InfoCard title="Sua Localização">
             <Text className="text-gray-600 text-base">{locationText}</Text>
-
             {alertSent && (
-              <Animated.View style={{ opacity: successAnim }} className="mt-4 bg-green-100 rounded-2xl p-4">
+              <View className="mt-4 bg-green-100 rounded-2xl p-4">
                 <Text className="text-green-600 font-bold text-center">
                   ✓ Alerta enviado para seus contatos de emergência!
                 </Text>
-              </Animated.View>
+              </View>
             )}
-          </View>
+          </InfoCard>
 
-          {/* INSTRUÇÕES */}
-          <View className="mt-8 bg-white rounded-3xl p-6 w-full shadow-lg">
-            <Text className="text-base font-bold text-[#1e6ba5] mb-3">Como funciona:</Text>
+          {/* INSTRUÇÕES (Usando o InfoCard) */}
+          <InfoCard title="Como funciona:">
             <Text className="text-gray-700 text-sm leading-6">
               Ao pressionar o botão SOS, um alerta será enviado imediatamente para todos os seus contatos de emergência
               cadastrados, incluindo sua localização atual em tempo real.
             </Text>
-          </View>
-
-          {/* BOTÃO SAIR */}
-          <TouchableOpacity
-            onPress={logout}
-            className="mt-8 bg-red-600 px-6 py-3 rounded-xl"
-          >
-            <Text className="text-white font-semibold">Sair</Text>
-          </TouchableOpacity>
+          </InfoCard>
         </View>
       </ScrollView>
     </LinearGradient>
