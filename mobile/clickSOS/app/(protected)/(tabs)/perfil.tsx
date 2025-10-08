@@ -184,6 +184,18 @@ export default function Perfil() {
           totalPaginas={totalPaginas}
           fetchAlertas={fetchAlertas}
         />
+
+
+        {/* Botão Sair */}
+        <View className="items-center pb-12 ">
+            <TouchableOpacity
+                onPress={logout}
+                className="mt-4 mb-8 bg-red px-6 py-3 rounded-xl"
+            >
+                <Text className="text-white font-semibold">Sair da Conta</Text>
+            </TouchableOpacity>
+        </View>
+        
       </ScrollView>
     </LinearGradient>
   );

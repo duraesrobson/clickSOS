@@ -47,7 +47,7 @@ const AlertsCard: React.FC<AlertsCardProps> = ({
     };
 
     return (
-        <View className="bg-white p-4 rounded-xl shadow mb-11">
+        <View className="bg-white p-4 rounded-xl shadow mb-3">
             
             {/* Título com Ícone */}
             <View className="flex-row items-center mb-4">

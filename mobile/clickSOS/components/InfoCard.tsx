@@ -1,19 +1,23 @@
-import React, { ReactNode } from 'react';
+// src/components/InfoCard.tsx
 import { View, Text } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
-// 1. Definição da interface (tipos) das propriedades (props)
 interface InfoCardProps {
   title: string;
-  // ReactNode permite passar qualquer coisa (Text, View, outros componentes) como children
-  children: ReactNode; 
+  iconName?: string; 
+  iconColor?: string; 
+  children: React.ReactNode;
 }
 
-// 2. Criação do componente com tipagem
-const InfoCard: React.FC<InfoCardProps> = ({ title, children }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ title, iconName, iconColor = '#1e6ba5', children }) => {
   return (
-    <View className="mt-8 bg-white rounded-3xl p-6 w-full shadow-lg">
-      <Text className="text-base font-bold text-[#1e6ba5] mb-3">{title}</Text>
-      {/* Aqui são renderizados os elementos que você passa para o componente */}
+    <View className="bg-white p-4 rounded-xl shadow mb-4 w-full">
+      <View className="flex-row items-center mb-3">
+        {iconName && (
+          <FontAwesome name={iconName} size={20} color={iconColor} className="mr-2" />
+        )}
+        <Text className="text-lg font-bold text-gray-800 ml-2">{title}</Text>
+      </View>
       {children}
     </View>
   );
