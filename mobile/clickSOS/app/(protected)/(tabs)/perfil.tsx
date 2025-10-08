@@ -4,7 +4,6 @@ import { useAuth } from "../../utils/authContext";
 import { API_URL } from "@env";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
-// Importa os novos componentes:
 import PerfilCard from "../../../components/PerfilCard";
 import ContatosCard from "../../../components/ContatosCard";
 import AlertsCard from "../../../components/AlertsCard";
@@ -18,12 +17,7 @@ export default function Perfil() {
   const [novoContato, setNovoContato] = useState({ nome: "", email: "", telefone: "" });
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(1);
-  // Removida a modalVisible, pois ela será interna ao ContactsCard
 
-  // ... (função fetchAlertas, useEffect fetchData, deletarContato e salvarContato permanecem aqui)
-  // ... (todas as suas funções de lógica devem permanecer no Perfil.tsx)
-
-  // função para buscar alertas paginados (MANTIDA NO COMPONENTE PAI)
   const fetchAlertas = async (paginaAtual = 0) => {
     try {
       setLoading(true);

@@ -1,9 +1,7 @@
-// src/components/ContactsCard.tsx
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, Modal, TextInput } from 'react-native';
 
-// Definindo o tipo Contato
 interface Contato {
     id: number;
     nome: string;
@@ -47,14 +45,13 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
     const handleSalvar = async () => {
         await salvarContato();
         // Se o contato for salvo com sucesso (lógica no componente pai), a modal fechará lá
-        if (contatos.length + 1 > contatos.length) { // Checagem simples para tentar fechar
+        if (contatos.length + 1 > contatos.length) {
             setModalVisible(false);
         }
     };
 
     return (
         <View className="bg-white p-4 rounded-xl shadow mb-4">
-            {/* Título com Ícone */}
             <View className="flex-row items-center mb-4">
                 <FontAwesome
                     name="address-book"

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Alert, ActivityIndicator, ScrollView } from "react-native";
 import * as Location from "expo-location";
 import * as Haptics from "expo-haptics";
@@ -9,7 +9,7 @@ import { API_URL } from "@env";
 import InfoCard from "../../../components/InfoCard";
 
 export default function Alertar() {
-  const { token, logout } = useAuth();
+  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [alertSent, setAlertSent] = useState(false);
   const [locationText, setLocationText] = useState("Obtendo localização...");
@@ -116,7 +116,7 @@ export default function Alertar() {
       <StatusBar style="dark" />
 
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 50, paddingTop:30, alignItems: 'center' }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 50, paddingTop: 50, alignItems: 'center' }}
         showsVerticalScrollIndicator={false}
       >
         {/* HEADER */}

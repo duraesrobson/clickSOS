@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-// Definição do tipo Contato simples para o alerta
+// define o tipo Contato simples para o alerta
 interface Contato {
     email: string;
 }
 
-// Definição da interface Alerta
+// definição da interface Alerta
 interface Alerta {
     id: number;
     latitude: number;
@@ -33,15 +33,15 @@ const AlertsCard: React.FC<AlertsCardProps> = ({
     fetchAlertas
 }) => {
     
-    // Função para carregar a próxima página
+    // função para carregar a próxima página
     const loadMore = () => {
-        // Verifica se não está carregando e se há mais páginas disponíveis
+        // verifica se não está carregando e se há mais páginas disponíveis
         if (!loading && pagina < totalPaginas - 1) {
             fetchAlertas(pagina + 1);
         }
     };
 
-    // Formata a lista de emails
+    // formata a lista de emails
     const formatContatos = (contatos: Contato[]) => {
         return contatos.map(c => c.email).join(", ");
     };
@@ -59,7 +59,7 @@ const AlertsCard: React.FC<AlertsCardProps> = ({
                 <Text className="text-xl font-bold text-[#db2b39] ml-2">Histórico de Alertas</Text>
             </View>
 
-            {/* Estado de Carregamento Inicial */}
+            {/* estado de Carregamento Inicial */}
             {loading && alertas.length === 0 ? (
                 <View className="my-4">
                     <ActivityIndicator size="large" color="#1e6ba5" />

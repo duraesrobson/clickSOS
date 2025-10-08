@@ -11,6 +11,9 @@ module.exports = {
         'blue': '#1e6ba5',
         'red': '#db2b39'
       },
+      native: {
+        Text: 'text-night', 
+      },
     },
   },
   plugins: [],
