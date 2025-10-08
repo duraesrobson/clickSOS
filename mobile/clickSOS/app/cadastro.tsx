@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { API_URL } from "@env";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Cadastro() {
     const router = useRouter();
@@ -67,11 +68,17 @@ export default function Cadastro() {
     };
 
     return (
-        <ScrollView className="flex-1 bg-gray-100 p-6">
-            <View className="bg-white p-6 rounded-2xl shadow-lg">
-                <Text className="text-2xl font-bold text-center mb-6 text-blue-600">
-                    Cadastro ClickSOS
+        <LinearGradient
+            colors={["#e8f2f8", "#fdf0d5"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            className="flex-1 justify-center p-6">
+            <View className="bg-white justify-center  p-6 rounded-2xl shadow-lg">
+                <Text className="text-blue text-2xl font-bold text-center mb-6 text-blue-600">
+                    Cadastre-se
                 </Text>
+
+                <Text className="text-lg font-semibold mb-2">Usuário</Text>
 
                 <TextInput
                     placeholder="Nome completo"
@@ -111,41 +118,40 @@ export default function Cadastro() {
                     className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
                 />
 
-                <Text className="text-lg font-semibold mb-2">Contato principal</Text>
+                <Text className="text-lg font-semibold mb-2 mt-2">Contato principal</Text>
 
                 <TextInput
                     placeholder="Nome do contato"
                     value={contato.nome}
                     onChangeText={(text) => setContato({ ...contato, nome: text })}
-                    className="border border-gray-300 rounded-xl p-2 mb-2 w-full"
+                    className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
                 />
                 <TextInput
                     placeholder="Email do contato"
                     value={contato.email}
                     onChangeText={(text) => setContato({ ...contato, email: text })}
-                    className="border border-gray-300 rounded-xl p-2 mb-2 w-full"
+                    className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
                 />
                 <TextInput
                     placeholder="Telefone do contato"
                     value={contato.telefone}
                     onChangeText={(text) => setContato({ ...contato, telefone: text })}
                     keyboardType="phone-pad"
-                    className="border border-gray-300 rounded-xl p-2 mb-2 w-full"
+                    className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
                 />
 
-                <Text className="text-sm text-gray-500 mb-4">
-                    Você poderá adicionar mais contatos depois, na tela Meu Perfil.
+                <Text className="text-sm text-center text-gray-500 mb-4">
+                    Você poderá adicionar mais contatos depois, na tela "Meu Perfil".
                 </Text>
 
                 <TouchableOpacity
                     onPress={handleCadastro}
-                    className="bg-blue-600 py-3 rounded-xl"
-                >
+                    className="bg-blue py-3 rounded-xl">
                     <Text className="text-white text-center font-semibold text-lg">
                         Cadastrar
                     </Text>
                 </TouchableOpacity>
             </View>
-        </ScrollView>
+        </LinearGradient>
     );
 }
