@@ -11,6 +11,7 @@ import { useAuth } from "./utils/authContext";
 import { API_URL } from "@env";
 import Logo from "../assets/imgs/logo-click-og.svg";
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -48,6 +49,7 @@ export default function Login() {
       end={{ x: 0, y: 1 }}
       className="flex-1 justify-center items-center p-6"
     >
+      <StatusBar style="dark" />
       <View className="w-full p-6 rounded-2xl">
         <View className="flex-auto pb-10 justify-center items-center">
           <Logo width={280} height={100} />
