@@ -18,7 +18,7 @@ export default function Home() {
       end={{ x: 0, y: 1 }}
       className="flex-1"
     >
-      <ScrollView className="flex-1 p-4">
+      <ScrollView className="flex-1 p-4 mt-11" showsVerticalScrollIndicator={false}>
         <StatusBar style="dark" />
 
         {/* BOAS-VINDAS E ÍCONE */}
@@ -75,7 +75,9 @@ export default function Home() {
           >
             <Text className="text-[#1e6ba5] font-semibold text-center">Ver/Editar Contatos</Text>
           </TouchableOpacity>
+
         </InfoCard>
+        <View className="h-20" />
       </ScrollView>
     </LinearGradient>
   );

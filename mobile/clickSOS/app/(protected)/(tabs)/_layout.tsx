@@ -5,7 +5,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 
 function CustomTabBarButton({ children, onPress }: BottomTabBarButtonProps) {
   return (
-    <Pressable onPress={onPress} 
+    <Pressable onPress={onPress}
       style={styles.buttonContainer}>
       <View style={styles.button}>{children}</View>
     </Pressable>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 32,
-    backgroundColor: "#db2b39", 
+    backgroundColor: "#db2b39",
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
@@ -49,6 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           title: "Início",
           tabBarIcon: ({ color }) => (
             <FontAwesome name="home" size={25} color={color} />

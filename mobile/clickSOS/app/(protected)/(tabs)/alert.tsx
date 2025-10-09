@@ -10,32 +10,60 @@ import InfoCard from "../../../components/InfoCard";
 
 export default function Alertar() {
   const { token } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
   const [alertSent, setAlertSent] = useState(false);
-  const [locationText, setLocationText] = useState("Obtendo localização...");
+  const [locationText, setLocationText] = useState("Buscando localização..."); 
   const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [locationLoading, setLocationLoading] = useState(false); // loader para a busca de localização
 
-  // obtém a localização automaticamente ao entrar na tela
-  useEffect(() => {
-    const getLocation = async () => {
-      try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setLocationText("Permissão de localização negada");
-          return;
-        }
+  // funcao para busca de localizacao
+  const fetchLocation = async () => {
+    setLocationLoading(true);
+    setLocationText("Buscando endereço...");
 
-        const location = await Location.getCurrentPositionAsync({});
-        const { latitude, longitude } = location.coords;
-        setCoords({ latitude, longitude });
-        setLocationText(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)}`);
-      } catch (err) {
-        console.log("Erro ao obter localização inicial:", err);
-        setLocationText("Erro ao obter localização");
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setLocationText("Permissão de localização negada");
+        return;
       }
-    };
 
-    getLocation();
+      // obtém as coordenadas
+      const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
+      const { latitude, longitude } = location.coords;
+      setCoords({ latitude, longitude });
+      
+      // converte as coordenadas em endereço legível (Geocodificação Reversa)
+      const geocode = await Location.reverseGeocodeAsync({ latitude, longitude });
+
+      if (geocode.length > 0) {
+        const address = geocode[0];
+        // fallback para a cidade caso nao encontre a primeira opcao
+        const cidade = address.city || address.subregion || '';
+        
+        // cria o texto do endereço no formato RUA, NÚMERO - CIDADE, ESTADO
+        const formattedAddress = 
+          `${address.street || 'Rua Desconhecida'}, ${address.streetNumber || 'S/N'}` +
+          ` - ${cidade}, ${address.region}`;
+          
+        setLocationText(formattedAddress);
+      } else {
+        // fallback para Lat/Long se a geocodificação falhar
+        setLocationText(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)} (Endereço indisponível)`);
+      }
+
+    } catch (err) {
+      console.log("Erro ao obter localização:", err);
+      setLocationText("Erro ao obter localização");
+    } finally {
+      setLocationLoading(false); // desativa o loader
+    }
+  };
+
+
+  // chama a funcao de busca ao montar a tela
+  useEffect(() => {
+    fetchLocation();
   }, []);
 
   // botão SOS envia localização
@@ -53,10 +81,13 @@ export default function Alertar() {
       let longitude = coords?.longitude;
 
       if (!latitude || !longitude) {
+        // se a localização ainda não foi carregada, tenta buscar uma vez antes de enviar
         const location = await Location.getCurrentPositionAsync({});
         latitude = location.coords.latitude;
         longitude = location.coords.longitude;
         setCoords({ latitude, longitude });
+        
+        // Opcional: Atualiza a tela com Lat/Long se a busca for feita aqui
         setLocationText(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)}`);
       }
 
@@ -70,7 +101,7 @@ export default function Alertar() {
       // feedback tátil
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-      // faz o POST no backend
+      // faz o POST no backend (USANDO APENAS LATITUDE E LONGITUDE)
       const response = await fetch(`${API_URL}/alertas`, {
         method: "POST",
         headers: {
@@ -151,7 +182,25 @@ export default function Alertar() {
 
           {/* LOCALIZAÇÃO (Usando o InfoCard) */}
           <InfoCard title="Sua Localização">
-            <Text className="text-gray-600 text-base">{locationText}</Text>
+            {locationLoading ? (
+                // loader enquanto a localização é buscada
+                <ActivityIndicator size="small" color="#1e6ba5" className="my-2" />
+            ) : (
+                // texto de localização (endereço ou erro)
+                <Text className="text-sm">{locationText}</Text>
+            )}
+
+            {/* botão para tentar buscar novamente */}
+            <TouchableOpacity
+                onPress={fetchLocation}
+                disabled={locationLoading || loading}
+                className={`mt-4 p-3 rounded-xl ${locationLoading ? 'bg-gray-300' : 'bg-[#1e6ba5]'}`}
+            >
+                <Text className="text-white font-semibold text-center">
+                {locationLoading ? 'Atualizando...' : 'Atualizar Localização'}
+                </Text>
+            </TouchableOpacity>
+
             {alertSent && (
               <View className="mt-4 bg-green-100 rounded-2xl p-4">
                 <Text className="text-green-600 font-bold text-center">
@@ -163,7 +212,7 @@ export default function Alertar() {
 
           {/* INSTRUÇÕES (Usando o InfoCard) */}
           <InfoCard title="Como funciona:">
-            <Text className="text-gray-700 text-sm leading-6">
+            <Text className="text-sm leading-6">
               Ao pressionar o botão SOS, um alerta será enviado imediatamente para todos os seus contatos de emergência
               cadastrados, incluindo sua localização atual em tempo real.
             </Text>
