@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "../../utils/authContext";
 import { API_URL } from "@env";
 import InfoCard from "../../../components/InfoCard";
+import Icon from "../../../assets/imgs/iconsvg.svg"
 
 export default function Alertar() {
   const { token } = useAuth();
@@ -152,7 +153,7 @@ export default function Alertar() {
       >
         {/* HEADER */}
         <View className="pt-12 pb-6 px-6 w-full items-center">
-          <Text className="text-3xl font-bold text-[#db2b39] mb-2">Alerta de Emergência</Text>
+          <Text className="text-3xl font-bold text-red mb-2">Alerta de Emergência</Text>
           <Text className="text-gray-700 text-base">Pressione o botão em caso de emergência</Text>
         </View>
 
@@ -165,17 +166,20 @@ export default function Alertar() {
               disabled={loading || alertSent}
               // activeOpacity garante que o botão "afunde" ao ser clicado
               activeOpacity={0.7}
-              className={`w-44 h-44 rounded-full items-center justify-center shadow-2xl ${alertSent ? "bg-blue" : "bg-red"
-                }`}
             >
               {loading ? (
-                <ActivityIndicator size="large" color="#fdf0d5" />
+                <View className="w-44 h-44 rounded-full items-center justify-center bg-red shadow-2xl">
+                  <ActivityIndicator size="large" color="#fdf0d5" />
+                </View>
               ) : alertSent ? (
-                <View>
+                <View className="w-44 h-44 rounded-full items-center justify-center bg-blue shadow-2xl">
                   <Text className="text-white text-xl font-bold">ENVIADO</Text>
                 </View>
               ) : (
-                <Text className="text-white text-3xl font-bold">SOS</Text>
+                <View className="justify-center items-center">
+                  <Text className="font-bold text-red">Clique aqui!</Text>
+                  <Icon width={250} height={250}/>
+                </View>
               )}
             </TouchableOpacity>
           </View>
