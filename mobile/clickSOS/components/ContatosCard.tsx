@@ -7,13 +7,19 @@ interface Contato {
     nome: string;
     email: string;
     telefone: string;
+    anoNascimento: number;
 }
+
+const calcularIdadeContato = (anoNascimento: number) => {
+    const anoAtual = 2025;
+    return anoAtual - anoNascimento 
+};
 
 interface ContactsCardProps {
     contatos: Contato[];
     deletarContato: (id: number) => Promise<void>;
     salvarContato: () => Promise<void>;
-    novoContato: { nome: string; email: string; telefone: string };
+    novoContato: { nome: string; email: string; telefone: string, anoNascimento: number };
     setNovoContato: React.Dispatch<React.SetStateAction<any>>;
 }
 
@@ -72,7 +78,8 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                         <Text>
                             <Text className="font-bold">{item.nome}</Text> {"\n"}
                             Email: {item.email} {"\n"}
-                            Telefone: {item.telefone}
+                            Telefone: {item.telefone} {"\n"}
+                            Idade: {calcularIdadeContato(item.anoNascimento)} anos
                         </Text>
                         <TouchableOpacity onPress={() => handleDeletar(item)}>
                             <FontAwesome
