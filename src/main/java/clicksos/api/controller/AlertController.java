@@ -45,4 +45,10 @@ public class AlertController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/resumo")
+    public ResponseEntity<String> mostrarResumoAlertasUsuario() {
+        var resumo = alertService.gerarResumoAlertsUsuario();
+        return ResponseEntity.ok(resumo);
+    }
+
 }

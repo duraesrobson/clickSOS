@@ -1,5 +1,8 @@
 package clicksos.api.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -79,10 +82,24 @@ public class AlertService {
         return alert;
     }
 
+    // lista todos os alertas do usuario
     public Page<DadosAlert> listarAlertsPorUsuario(Pageable pageable) {
         Usuario usuario = getUsuarioAutenticado();
         return alertaRepository.findAllByUsuarioId(usuario.getId(), pageable)
                 .map(DadosAlert::new);
+    }
+
+    // gera um resumo dos alertas com o metodo do hugging face service
+    public String gerarResumoAlertsUsuario() {
+        Usuario usuario = getUsuarioAutenticado();
+
+        List<Alert> alertas = alertaRepository.findAllByUsuarioId(usuario.getId());
+
+        List<DadosAlert> dadosAlerts = alertas.stream()
+                .map(DadosAlert::new)
+                .collect(Collectors.toList());
+
+        return huggingFaceService.gerarResumoAlertas(usuario.getNome(), dadosAlerts);
     }
 
 }
