@@ -44,14 +44,14 @@ public class HuggingFaceService {
                         String prompt = String.format(
                                         "Gere um texto no formato de e-mail profissional %s, sem usar asteriscos ou formatação Markdown. "
                                                         +
-                                                        "**O DESTINATÁRIO DESTE E-MAIL É O CONTATO DE EMERGÊNCIA (%s), NÃO O USUÁRIO EM PERIGO.** "
+                                                        "**O DESTINATÁRIO DESTE E-MAIL É O CONTATO DE EMERGÊNCIA, NÃO O USUÁRIO EM PERIGO.** "
                                                         +
                                                         "O e-mail deve informar que o usuário %s (e-mail: %s) acionou o clickSOS e pode estar em perigo. "
                                                         +
                                                         "Pule um parágrafo informando a localização com coordenadas e envie o link do Google Maps (%s). "
                                                         +
                                                         "A mensagem deve ser clara, empática e formatada como um e-mail completo, com saudação (na saudação coloque o nome do contato %s), corpo do texto e fechamento apropriado, no fechamento coloque Atenciosamente, Equipe clickSOS.",
-                                        estilo, nomeContato, nomeUsuario, emailUsuario, mapaLink, nomeContato);
+                                        estilo, nomeUsuario, emailUsuario, mapaLink, nomeContato);
 
                         HttpClient client = HttpClient.newHttpClient();
 
