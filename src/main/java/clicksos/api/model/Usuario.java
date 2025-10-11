@@ -43,6 +43,7 @@ public class Usuario {
     private LocalDate dataNascimento;
     private String senha;
     private String email;
+    private String telefone;
     private LocalDateTime criadoEm;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
@@ -54,10 +55,11 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Alert> alertas = new ArrayList<>();
 
-    public Usuario(String nome, LocalDate dataNascimento, String email, String senha) {
+    public Usuario(String nome, LocalDate dataNascimento, String email, String telefone, String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.email = email;
+        this.telefone = telefone;
         this.senha = senha;
     }
 

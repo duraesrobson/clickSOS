@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.Valid;
 
 public record DadosCriarUsuario(
@@ -18,6 +19,7 @@ public record DadosCriarUsuario(
         @NotBlank String senha,
         @NotBlank String confirmarSenha,
         @NotBlank @Email String email,
+        @NotBlank @Pattern(regexp = "^\\d{11}$", message = "Telefone inválido. Deve conter apenas números, ex.: 21975558777") String telefone,
         @NotEmpty @Valid List<DadosCriarContato> contatos) {
 
 }

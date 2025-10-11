@@ -6,8 +6,9 @@ public record DadosContato(
         Long id,
         String nome,
         String email,
-        String telefone) {
+        String telefone,
+        Integer anoNascimento) {
     public DadosContato(Contato contato) {
-        this(contato.getId(), contato.getNome(), contato.getEmail(), contato.getTelefone());
+        this(contato.getId(), contato.getNome(), contato.getEmail(), contato.getTelefone(), contato.getAnoNascimento());
     }
 }

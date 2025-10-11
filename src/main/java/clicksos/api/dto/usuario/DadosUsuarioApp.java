@@ -12,10 +12,11 @@ public record DadosUsuarioApp(
         String nome,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy") LocalDate dataNascimento,
         String email,
+        String telefone,
         List<DadosContato> contatos) {
 
     public DadosUsuarioApp(Usuario usuario) {
-        this(usuario.getNome(), usuario.getDataNascimento(), usuario.getEmail(),
+        this(usuario.getNome(), usuario.getDataNascimento(), usuario.getEmail(), usuario.getTelefone(),
                 usuario.getContatos().stream().map(DadosContato::new).toList());
     }
 

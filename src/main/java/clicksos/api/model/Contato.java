@@ -29,15 +29,17 @@ public class Contato {
     private String nome;
     private String email;
     private String telefone;
+    private Integer anoNascimento;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    public Contato(String nome, String email, String telefone, Usuario usuario) {
+    public Contato(String nome, String email, String telefone, Integer anoNascimento, Usuario usuario) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
+        this.anoNascimento = anoNascimento;
         this.usuario = usuario;
     }
 

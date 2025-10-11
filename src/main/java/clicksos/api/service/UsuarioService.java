@@ -48,11 +48,11 @@ public class UsuarioService {
             throw new TratarErros.SenhasNaoConferem();
         }
 
-        Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.email(),
+        Usuario usuario = new Usuario(dados.nome(), dados.dataNascimento(), dados.email(), dados.telefone(),
                 senhaCriptografada);
 
         for (DadosCriarContato c : dados.contatos()) {
-            Contato contato = new Contato(c.nome(), c.email(), c.telefone(), usuario);
+            Contato contato = new Contato(c.nome(), c.email(), c.telefone(), c.anoNascimento(), usuario);
             usuario.getContatos().add(contato);
         }
 
@@ -80,7 +80,7 @@ public class UsuarioService {
             throw new TratarErros.EmailJaCadastrado();
         }
 
-        Contato contato = new Contato(dados.nome(), dados.email(), dados.telefone(), usuario);
+        Contato contato = new Contato(dados.nome(), dados.email(), dados.telefone(), dados.anoNascimento(), usuario);
         usuario.getContatos().add(contato);
         contato = contatoRepository.save(contato);
         usuarioRepository.save(usuario);
