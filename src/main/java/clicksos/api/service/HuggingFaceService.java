@@ -27,11 +27,20 @@ public class HuggingFaceService {
                         "de forma direta e empática",
                         "com senso de urgência e clareza",
                         "com linguagem formal e respeitosa",
-                        "de maneira breve e objetiva"
+                        "de maneira breve e objetiva",
+                        "focado na ação e nos próximos passos necessários",
+                        "de maneira acolhedora e oferecendo suporte imediato",
+                        "em tom sério, destacando a gravidade da situação",
+                        "com linguagem que incentiva a resposta imediata",
+                        "com ênfase na verificação e confirmação da situação"
         };
 
         // método para gerar a mensagem de emergencia com hugging face
-        public String gerarMensagemEmergencia(String nomeUsuario, String emailUsuario, String nomeContato,
+        public String gerarMensagemEmergencia(
+                        String nomeUsuario,
+                        String emailUsuario,
+                        String nomeContato,
+                        Integer idadeContato,
                         double latitude,
                         double longitude) {
                 try {
@@ -42,16 +51,20 @@ public class HuggingFaceService {
                         // prompt para a ia criar a mensagem do e-mail que será enviado para os contatos
                         // do usuario
                         String prompt = String.format(
-                                        "Gere um texto no formato de e-mail profissional %s, sem usar asteriscos ou formatação Markdown. "
+                                        "**INSTRUÇÃO DE TOM:** Você atua como um sistema de alerta profissional e empático. Ajuste o tom da mensagem baseado na idade do contato (idadeContato: %d). Quanto mais a idade do contato passar de 40 anos, o tom deve ser cada vez mais **calmo, informativo, tranquilizador e minimizar o pânico**. Para contatos mais jovens, escolha um dos estilos (estilos: %s) para gerar o texto.\n\n"
                                                         +
-                                                        "**O DESTINATÁRIO DESTE E-MAIL É O CONTATO DE EMERGÊNCIA, NÃO O USUÁRIO EM PERIGO.** "
+                                                        "**REQUISITOS DE CONTEÚDO E FORMATO:**\n"
                                                         +
-                                                        "O e-mail deve informar que o usuário %s (e-mail: %s) acionou o clickSOS e pode estar em perigo. "
+                                                        "1. Gere um e-mail completo no formato profissional, sem usar asteriscos, negritos ou formatação Markdown.\n"
                                                         +
-                                                        "Pule um parágrafo informando a localização com coordenadas e envie o link do Google Maps (%s). "
+                                                        "2. O DESTINATÁRIO É O CONTATO DE EMERGÊNCIA, NÃO O USUÁRIO EM PERIGO.\n"
                                                         +
-                                                        "A mensagem deve ser clara, empática e formatada como um e-mail completo, com saudação (na saudação coloque o nome do contato %s), corpo do texto e fechamento apropriado, no fechamento coloque Atenciosamente, Equipe clickSOS.",
-                                        estilo, nomeUsuario, emailUsuario, mapaLink, nomeContato);
+                                                        "3. O e-mail deve começar com uma saudação personalizada (Ex: Olá %s) e informar que o usuário (%s, e-mail: %s) acionou o clickSOS.\n"
+                                                        +
+                                                        "4. Separe em um parágrafo exclusivo a informação da localização, citando brevemente as coordenadas e fornecendo o link do Google Maps (%s) como principal referência.\n"
+                                                        +
+                                                        "5. Feche o e-mail de forma apropriada, terminando com 'Atenciosamente, Equipe clickSOS.'",
+                                        idadeContato, estilo, nomeContato, nomeUsuario, emailUsuario, mapaLink);
 
                         HttpClient client = HttpClient.newHttpClient();
 

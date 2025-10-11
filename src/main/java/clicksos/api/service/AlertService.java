@@ -48,14 +48,19 @@ public class AlertService {
         alert = alertaRepository.save(alert);
 
         for (Contato c : usuario.getContatos()) {
+            // idade de cada contato atualizada dinamicamente
+            Integer idadeContato = 2025 - c.getAnoNascimento();
+
             // metodo dentro do for para pegar os nomes de cada contato do usuario
             String mensagemParaContatos = huggingFaceService.gerarMensagemEmergencia(alert.getUsuario().getNome(),
-                    alert.getUsuario().getEmail(), c.getNome(),
+                    alert.getUsuario().getEmail(), c.getNome(), idadeContato,
                     alert.getLatitude().doubleValue(), alert.getLongitude().doubleValue());
 
+            // envia email para cada contato
             emailService.enviarEmail(c.getEmail(),
                     "Alerta clickSOS - " + alert.getUsuario().getNome() + " acionou o sistema!",
                     mensagemParaContatos);
+
             // cria o to string com os contatos
             contatosInfo.append(c.getNome()).append(" (").append(c.getEmail()).append(")\n");
         }
