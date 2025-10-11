@@ -11,9 +11,9 @@ import Icon from "../../../assets/imgs/iconsvg.svg"
 
 export default function Alertar() {
   const { token } = useAuth();
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [alertSent, setAlertSent] = useState(false);
-  const [locationText, setLocationText] = useState("Buscando localização..."); 
+  const [locationText, setLocationText] = useState("Buscando localização...");
   const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationLoading, setLocationLoading] = useState(false); // loader para a busca de localização
 
@@ -33,7 +33,7 @@ export default function Alertar() {
       const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
       const { latitude, longitude } = location.coords;
       setCoords({ latitude, longitude });
-      
+
       // converte as coordenadas em endereço legível (Geocodificação Reversa)
       const geocode = await Location.reverseGeocodeAsync({ latitude, longitude });
 
@@ -41,12 +41,12 @@ export default function Alertar() {
         const address = geocode[0];
         // fallback para a cidade caso nao encontre a primeira opcao
         const cidade = address.city || address.subregion || '';
-        
+
         // cria o texto do endereço no formato RUA, NÚMERO - CIDADE, ESTADO
-        const formattedAddress = 
+        const formattedAddress =
           `${address.street || 'Rua Desconhecida'}, ${address.streetNumber || 'S/N'}` +
           ` - ${cidade}, ${address.region}`;
-          
+
         setLocationText(formattedAddress);
       } else {
         // fallback para Lat/Long se a geocodificação falhar
@@ -87,7 +87,7 @@ export default function Alertar() {
         latitude = location.coords.latitude;
         longitude = location.coords.longitude;
         setCoords({ latitude, longitude });
-        
+
         // Opcional: Atualiza a tela com Lat/Long se a busca for feita aqui
         setLocationText(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)}`);
       }
@@ -152,9 +152,9 @@ export default function Alertar() {
         showsVerticalScrollIndicator={false}
       >
         {/* HEADER */}
-        <View className="pt-12 pb-6 px-6 w-full items-center">
+        <View className="pt-12 px-6 w-full items-center">
           <Text className="text-3xl font-bold text-red mb-2">Alerta de Emergência</Text>
-          <Text className="text-gray-700 text-base">Pressione o botão em caso de emergência</Text>
+          <Text className="text-gray-700 text-base">Pressione o botão abaixo em caso de emergência</Text>
         </View>
 
         {/* BODY */}
@@ -176,10 +176,7 @@ export default function Alertar() {
                   <Text className="text-white text-xl font-bold">ENVIADO</Text>
                 </View>
               ) : (
-                <View className="justify-center items-center">
-                  <Text className="font-bold text-red">Clique aqui!</Text>
-                  <Icon width={250} height={250}/>
-                </View>
+                <Icon width={300} height={300} />
               )}
             </TouchableOpacity>
           </View>
@@ -187,22 +184,22 @@ export default function Alertar() {
           {/* LOCALIZAÇÃO (Usando o InfoCard) */}
           <InfoCard title="Sua Localização">
             {locationLoading ? (
-                // loader enquanto a localização é buscada
-                <ActivityIndicator size="small" color="#1e6ba5" className="my-2" />
+              // loader enquanto a localização é buscada
+              <ActivityIndicator size="small" color="#1e6ba5" className="my-2" />
             ) : (
-                // texto de localização (endereço ou erro)
-                <Text className="text-sm">{locationText}</Text>
+              // texto de localização (endereço ou erro)
+              <Text className="text-sm">{locationText}</Text>
             )}
 
             {/* botão para tentar buscar novamente */}
             <TouchableOpacity
-                onPress={fetchLocation}
-                disabled={locationLoading || loading}
-                className={`mt-4 p-3 rounded-xl ${locationLoading ? 'bg-gray-300' : 'bg-[#1e6ba5]'}`}
+              onPress={fetchLocation}
+              disabled={locationLoading || loading}
+              className={`mt-4 p-3 rounded-xl ${locationLoading ? 'bg-gray-300' : 'bg-[#1e6ba5]'}`}
             >
-                <Text className="text-white font-semibold text-center">
+              <Text className="text-white font-semibold text-center">
                 {locationLoading ? 'Atualizando...' : 'Atualizar Localização'}
-                </Text>
+              </Text>
             </TouchableOpacity>
 
             {alertSent && (
