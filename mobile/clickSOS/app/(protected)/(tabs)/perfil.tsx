@@ -14,7 +14,7 @@ export default function Perfil() {
   const [usuario, setUsuario] = useState<any>(null);
   const [contatos, setContatos] = useState<any[]>([]);
   const [alertas, setAlertas] = useState<any[]>([]);
-  const [novoContato, setNovoContato] = useState({ nome: "", email: "", telefone: "" });
+  const [novoContato, setNovoContato] = useState<any>({ nome: "", email: "", telefone: "", anoNascimento: null });
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
@@ -93,8 +93,8 @@ export default function Perfil() {
 
   //funcao para adicionar contato (MANTIDA NO COMPONENTE PAI)
   const salvarContato = async () => {
-    const { nome, email, telefone } = novoContato;
-    if (!nome || !email || !telefone) {
+    const { nome, email, telefone, anoNascimento } = novoContato;
+    if (!nome || !email || !telefone || !anoNascimento) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
     }
@@ -112,7 +112,7 @@ export default function Perfil() {
       if (response.ok) {
         const contatoCriado = await response.json();
         setContatos([...contatos, contatoCriado]);
-        setNovoContato({ nome: "", email: "", telefone: "" });
+        setNovoContato({ nome: "", email: "", telefone: "", anoNascimento: null });
       } else {
         let errorMsg = "Não foi possível adicionar o contato.";
         try {

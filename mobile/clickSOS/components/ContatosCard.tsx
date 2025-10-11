@@ -10,16 +10,16 @@ interface Contato {
     anoNascimento: number;
 }
 
+const anoAtual = 2025;
 const calcularIdadeContato = (anoNascimento: number) => {
-    const anoAtual = 2025;
     return anoAtual - anoNascimento 
 };
 
 interface ContactsCardProps {
     contatos: Contato[];
     deletarContato: (id: number) => Promise<void>;
-    salvarContato: () => Promise<void>;
-    novoContato: { nome: string; email: string; telefone: string, anoNascimento: number };
+    salvarContato: (contato : { nome: string; email: string; telefone: string; anoNascimento: number }) => Promise<void>;
+    novoContato: { nome: string; email: string; telefone: string; anoNascimento: number | null };
     setNovoContato: React.Dispatch<React.SetStateAction<any>>;
 }
 
@@ -49,7 +49,32 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
     };
 
     const handleSalvar = async () => {
-        await salvarContato();
+        const { nome, email, telefone, anoNascimento } = novoContato;
+
+        if (!nome || !email || !telefone || !anoNascimento) {
+            Alert.alert("Erro", "Preencha todos os campos obrigatórios")
+            return;
+        }
+
+        if (telefone.length !== 11) {
+            Alert.alert("Erro", "O telefone deve conter exatamente 11 dígitos (incluindo DDD e 9).")
+        }
+
+        if (anoNascimento === null || isNaN(Number(anoNascimento))) {
+            Alert.alert("Erro", "O Ano de Nascimento é obrigatório e deve ser um valor numérico válido (ex: 1985).");
+            return;
+        }
+
+        if (Number(anoNascimento) < 1920 || Number(anoNascimento) > anoAtual) {
+            Alert.alert("Erro", "O Ano de Nascimento deve ser entre 1920 e o ano atual (ex: 1985).");
+            return;
+        }
+        await salvarContato({
+            nome,
+            email,
+            telefone,
+            anoNascimento: anoNascimento as number,
+        });
         // Se o contato for salvo com sucesso (lógica no componente pai), a modal fechará lá
         if (contatos.length + 1 > contatos.length) {
             setModalVisible(false);
@@ -104,24 +129,39 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                     <View className="bg-white w-full p-4 rounded-xl">
                         <Text className="text-blue text-xl font-bold mb-2">Novo Contato</Text>
                         <TextInput
-                            placeholder="Nome"
+                            placeholder="Nome e Sobrenome"
                             className="border border-gray-300 rounded p-2 mb-2"
                             value={novoContato.nome}
                             onChangeText={(text) => setNovoContato({ ...novoContato, nome: text })}
                         />
                         <TextInput
-                            placeholder="Email"
+                            placeholder="Email (teste@email.com)"
                             className="border border-gray-300 rounded p-2 mb-2"
                             keyboardType="email-address"
                             value={novoContato.email}
                             onChangeText={(text) => setNovoContato({ ...novoContato, email: text })}
                         />
                         <TextInput
-                            placeholder="Telefone"
+                            placeholder="Telefone (21912345678)"
                             className="border border-gray-300 rounded p-2 mb-4"
+                            maxLength={11}
                             keyboardType="phone-pad"
                             value={novoContato.telefone}
                             onChangeText={(text) => setNovoContato({ ...novoContato, telefone: text })}
+                        />
+                        <TextInput
+                            placeholder="Ano de Nascimento (Ex.: 1995)"
+                            className="border border-gray-300 rounded p-2 mb-4"
+                            keyboardType="phone-pad"
+                            value={novoContato.anoNascimento === null ? '' : String(novoContato.anoNascimento)}
+                            onChangeText={(text) => {
+                                const textoLimpo = text.replace(/[^0-9]/g, '');
+                                const num = parseInt(textoLimpo, 10);
+                             setNovoContato({ 
+                                ...novoContato, 
+                                anoNascimento: textoLimpo === '' ? null : num });
+                            }}
+                            maxLength={4}
                         />
                         <View className="flex-row justify-between ">
                             <TouchableOpacity onPress={() => setModalVisible(false)}>
