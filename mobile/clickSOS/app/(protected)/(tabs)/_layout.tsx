@@ -36,9 +36,9 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: "#db2b39",
         tabBarInactiveTintColor: "#fdf0d5",
-        tabBarStyle: { backgroundColor: "#1e6ba5", height: 70, },
+        tabBarStyle: { backgroundColor: "#1e6ba5", height: 60, },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 10,
           color: "#fdf0d5"
         },
         headerStyle: { backgroundColor: "#1e6ba5" },
@@ -52,7 +52,7 @@ export default function TabLayout() {
           headerShown: false,
           title: "Início",
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="home" size={25} color={color} />
+            <FontAwesome name="home" size={28} color={color} />
           ),
         }}
       />
@@ -63,7 +63,7 @@ export default function TabLayout() {
           title: "Alertar",
           tabBarActiveTintColor: "black",
           tabBarIcon: () => (
-            <FontAwesome name="warning" size={26} color="#fdf0d5" />
+            <FontAwesome name="warning" size={28} color="#fdf0d5" />
           ),
           tabBarButton: (props) => <CustomTabBarButton {...props} />,
         }}
@@ -74,7 +74,7 @@ export default function TabLayout() {
           headerShown: false,
           title: "Perfil",
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={25} color={color} />
+            <FontAwesome name="user" size={28} color={color} />
           ),
         }}
       />
