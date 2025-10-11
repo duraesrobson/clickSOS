@@ -12,13 +12,13 @@ interface Contato {
 
 const anoAtual = 2025;
 const calcularIdadeContato = (anoNascimento: number) => {
-    return anoAtual - anoNascimento 
+    return anoAtual - anoNascimento
 };
 
 interface ContactsCardProps {
     contatos: Contato[];
     deletarContato: (id: number) => Promise<void>;
-    salvarContato: (contato : { nome: string; email: string; telefone: string; anoNascimento: number }) => Promise<void>;
+    salvarContato: (contato: { nome: string; email: string; telefone: string; anoNascimento: number }) => Promise<void>;
     novoContato: { nome: string; email: string; telefone: string; anoNascimento: number | null };
     setNovoContato: React.Dispatch<React.SetStateAction<any>>;
 }
@@ -77,7 +77,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
             });
             setModalVisible(false);
         } catch (error) {
-            Alert.alert("Erro", "Não foi possível salvar o contato. Tente novamente.")            
+            Alert.alert("Erro", "Não foi possível salvar o contato. Tente novamente.")
         } finally {
             setIsLoading(false);
         }
@@ -135,6 +135,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                             className="border border-gray-300 rounded p-2 mb-2"
                             value={novoContato.nome}
                             onChangeText={(text) => setNovoContato({ ...novoContato, nome: text })}
+                            editable={!isLoading}
                         />
                         <TextInput
                             placeholder="Email (teste@email.com)"
@@ -142,6 +143,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                             keyboardType="email-address"
                             value={novoContato.email}
                             onChangeText={(text) => setNovoContato({ ...novoContato, email: text })}
+                            editable={!isLoading}
                         />
                         <TextInput
                             placeholder="Telefone (21912345678)"
@@ -150,6 +152,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                             keyboardType="phone-pad"
                             value={novoContato.telefone}
                             onChangeText={(text) => setNovoContato({ ...novoContato, telefone: text })}
+                            editable={!isLoading}
                         />
                         <TextInput
                             placeholder="Ano de Nascimento (Ex.: 1995)"
@@ -159,18 +162,24 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                             onChangeText={(text) => {
                                 const textoLimpo = text.replace(/[^0-9]/g, '');
                                 const num = parseInt(textoLimpo, 10);
-                             setNovoContato({ 
-                                ...novoContato, 
-                                anoNascimento: textoLimpo === '' ? null : num });
+                                setNovoContato({
+                                    ...novoContato,
+                                    anoNascimento: textoLimpo === '' ? null : num
+                                });
                             }}
                             maxLength={4}
+                            editable={!isLoading}
                         />
                         <View className="flex-row justify-between ">
                             <TouchableOpacity onPress={() => setModalVisible(false)}>
                                 <Text className="text-gray-500 font-semibold">Cancelar</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleSalvar}>
-                                <Text className="text-blue font-semibold">Salvar</Text>
+                            <TouchableOpacity onPress={handleSalvar} disabled={isLoading}>
+                                {isLoading ? (
+                                    <ActivityIndicator size="small" color="1e6ba5" />
+                                ) : (
+                                    <Text className="text-blue font-semibold">Salvar</Text>
+                                )}
                             </TouchableOpacity>
                         </View>
                     </View>
