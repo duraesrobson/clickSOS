@@ -18,6 +18,7 @@ public class ApiApplication {
 				System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 				System.setProperty("EMAIL", dotenv.get("EMAIL"));
 				System.setProperty("SENHA_APP_EMAIL", dotenv.get("SENHA_APP_EMAIL"));
+				System.setProperty("HUGGINGFACE_TOKEN", dotenv.get("HUGGINGFACE_TOKEN"));
 			} catch (Exception e) {
 				System.err.println("Aviso: .env não encontrado. Usando variáveis de ambiente do sistema.");
 			}
