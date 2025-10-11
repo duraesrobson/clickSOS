@@ -155,6 +155,7 @@ export default function Perfil() {
           <PerfilCard
             nome={usuario.nome}
             email={usuario.email}
+            telefone={usuario.telefone}
             dataNascimento={usuario.dataNascimento}
           />
         ) : (

@@ -5,10 +5,11 @@ import { FontAwesome } from '@expo/vector-icons';
 interface ProfileCardProps {
   nome: string;
   email: string;
+  telefone: string;
   dataNascimento: string;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ nome, email, dataNascimento }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ nome, email,telefone, dataNascimento }) => {
   return (
     <View className="mt-10 bg-white p-4 rounded-xl shadow mb-4">
       
@@ -24,6 +25,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ nome, email, dataNascimento }
       {/* Conteúdo do Perfil */}
       <Text>Nome: <Text className='font-bold text-blue'>{nome}</Text></Text>
       <Text>Email: <Text className='font-bold text-blue'>{email}</Text></Text>
+      <Text>Telefone: <Text className='font-bold text-blue'>{telefone}</Text></Text>
       <Text>Data de Nascimento: <Text className='font-bold text-blue'>{dataNascimento}</Text></Text>
     </View>
   );
