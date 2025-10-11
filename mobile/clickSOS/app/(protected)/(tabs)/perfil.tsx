@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, ActivityIndicator, Alert, ScrollView, TouchableOpacity, Text } from "react-native";
-import { useAuth } from "../../utils/authContext";
+import { useAuth } from "../../../utils/authContext";
 import { API_URL } from "@env";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";

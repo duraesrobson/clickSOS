@@ -4,7 +4,7 @@ import * as Location from "expo-location";
 import * as Haptics from "expo-haptics";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
-import { useAuth } from "../../utils/authContext";
+import { useAuth } from "../../../utils/authContext";
 import { API_URL } from "@env";
 import InfoCard from "../../../components/InfoCard";
 import Icon from "../../../assets/imgs/iconsvg.svg"

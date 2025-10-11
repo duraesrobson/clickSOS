@@ -11,5 +11,5 @@
     "svg.d.ts",
     "env.d.ts",
     "nativewind-env.d.ts"
-  ]
+, "utils"  ]
 }

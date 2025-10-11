@@ -7,7 +7,7 @@ import {
   Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { useAuth } from "./utils/authContext";
+import { useAuth } from "../utils/authContext";
 import { API_URL } from "@env";
 import Logo from "../assets/imgs/logo-click-og.svg";
 import { LinearGradient } from "expo-linear-gradient";

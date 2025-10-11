@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import { useAuth } from "../../utils/authContext";
+import { useAuth } from "../../../utils/authContext";
 import InfoCard from "../../../components/InfoCard";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Logo from '../../../assets/imgs/logo-click-og.svg'
