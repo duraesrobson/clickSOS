@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, Modal, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, Modal, TextInput, ActivityIndicator } from 'react-native';
 
 interface Contato {
     id: number;
@@ -31,6 +31,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
     setNovoContato,
 }) => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Lógica da Modal (transferida do componente pai)
     const handleDeletar = (item: Contato) => {
@@ -60,24 +61,25 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
             Alert.alert("Erro", "O telefone deve conter exatamente 11 dígitos (incluindo DDD e 9).")
         }
 
-        if (anoNascimento === null || isNaN(Number(anoNascimento))) {
-            Alert.alert("Erro", "O Ano de Nascimento é obrigatório e deve ser um valor numérico válido (ex: 1985).");
-            return;
-        }
-
         if (Number(anoNascimento) < 1920 || Number(anoNascimento) > anoAtual) {
             Alert.alert("Erro", "O Ano de Nascimento deve ser entre 1920 e o ano atual (ex: 1985).");
             return;
         }
-        await salvarContato({
-            nome,
-            email,
-            telefone,
-            anoNascimento: anoNascimento as number,
-        });
-        // Se o contato for salvo com sucesso (lógica no componente pai), a modal fechará lá
-        if (contatos.length + 1 > contatos.length) {
+
+        setIsLoading(true);
+
+        try {
+            await salvarContato({
+                nome,
+                email,
+                telefone,
+                anoNascimento: anoNascimento as number,
+            });
             setModalVisible(false);
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível salvar o contato. Tente novamente.")            
+        } finally {
+            setIsLoading(false);
         }
     };
 
