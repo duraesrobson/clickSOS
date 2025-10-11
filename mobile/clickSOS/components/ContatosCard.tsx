@@ -76,10 +76,10 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                         className="flex-row justify-between items-center p-2 bg-gray-100 rounded mb-2 border-l-4 border-blue"
                     >
                         <Text>
-                            <Text className="font-bold">{item.nome}</Text> {"\n"}
-                            Email: {item.email} {"\n"}
-                            Telefone: {item.telefone} {"\n"}
-                            Idade: {calcularIdadeContato(item.anoNascimento)} anos
+                            <Text className="font-bold text-blue">{item.nome}</Text> {"\n"}
+                            Email: <Text className='font-medium text-blue'>{item.email}</Text> {"\n"}
+                            Telefone: <Text className='font-medium text-blue'>{item.telefone}</Text> {"\n"}
+                            Idade: <Text className='font-medium text-blue'>{calcularIdadeContato(item.anoNascimento)} anos</Text>
                         </Text>
                         <TouchableOpacity onPress={() => handleDeletar(item)}>
                             <FontAwesome
