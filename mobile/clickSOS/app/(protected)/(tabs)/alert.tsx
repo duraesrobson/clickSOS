@@ -11,11 +11,13 @@ import Icon from "../../../assets/imgs/iconsvg.svg"
 
 export default function Alertar() {
   const { token } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); //loading do botao SOS
   const [alertSent, setAlertSent] = useState(false);
   const [locationText, setLocationText] = useState("Buscando localização...");
   const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationLoading, setLocationLoading] = useState(false); // loader para a busca de localização
+  const [resumo, setResumo] = useState<string | null>(null); 
+  const [resumoLoading, setResumoLoading] = useState(false); //loading do resumo da ia
 
   // funcao para busca de localizacao
   const fetchLocation = async () => {
@@ -138,6 +140,49 @@ export default function Alertar() {
     }
   };
 
+  // funcao para mostrar resumo gerado por ia
+  const mostrarResumo = async () => {
+    
+    // mostra o resumo apenas se tiver autenticado
+    if (!token) {
+      setResumo("Autenticação necessária para carregar o resumo.");
+      return;
+    }
+
+    try {
+      setResumoLoading(true);
+      
+      // faz a conexao com a api
+      const resumoRes = await fetch(`${API_URL}/alertas/resumo`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // tratamento se a resposta vier com erro
+      if (!resumoRes.ok) {
+        const errorDetail = await resumoRes.text();
+        console.error("Erro aos buscar resumo:", resumoRes.status, errorDetail);
+        Alert.alert("Erro", "Não foi possível carregar o resumo dos alertas.");
+        return;
+      }
+
+      // conteudo do resumo é setado
+      const data = await resumoRes.text();
+      setResumo(data);
+
+    } catch (err) {
+      console.log("Erro na requisição/conexão do resumo:", err);
+        Alert.alert("Erro", "Não foi possível carregar o resumo dos alertas. Erro de conexão.");
+        setResumo("Erro ao carregar o resumo. Verifique a conexão.")
+    } finally {
+      setResumoLoading(false);
+    }
+  }
+
+  // carrega o resumo no loadin inicial da página
+  useEffect(() => {
+    mostrarResumo();
+  }, [token]);
+
   return (
     <LinearGradient
       colors={["#e8f2f8", "#fdf0d5"]}
@@ -185,10 +230,10 @@ export default function Alertar() {
           <InfoCard title="Sua Localização">
             {locationLoading ? (
               // loader enquanto a localização é buscada
-              <ActivityIndicator size="small" color="#1e6ba5" className="my-2" />
+              <ActivityIndicator size="large" color="#1e6ba5" className="my-2" />
             ) : (
               // texto de localização (endereço ou erro)
-              <Text className="text-sm">{locationText}</Text>
+              <Text className="text-base">{locationText}</Text>
             )}
 
             {/* botão para tentar buscar novamente */}
@@ -213,11 +258,32 @@ export default function Alertar() {
 
           {/* INSTRUÇÕES (Usando o InfoCard) */}
           <InfoCard title="Como funciona:">
-            <Text className="text-sm leading-6">
+            <Text className="text-base leading-6">
               Ao pressionar o botão SOS, um alerta será enviado imediatamente para todos os seus contatos de emergência
               cadastrados, incluindo sua localização atual em tempo real.
             </Text>
           </InfoCard>
+
+          {/* RESUMO DOS ALERTS POR IA (Usando o InfoCard) */}
+          <InfoCard title="Resumo dos seus alertas:">
+            {resumoLoading ? (
+              <ActivityIndicator size="large" color="#1e6ba5" className="my-2" />
+            ) : (
+              <Text className="text-base leading-6">
+                {resumo || "Nenhum resumo disponível. Acione seu primeiro alerta para gerar uma análise!"}
+              </Text>
+            )}
+            <TouchableOpacity
+              onPress={mostrarResumo}
+              disabled={resumoLoading}
+              className={`mt-4 p-3 rounded-xl ${resumoLoading ? 'bg-gray-300' : 'bg-[#1e6ba5]'}`}
+            >
+              <Text className="text-white font-semibold text-center">
+                {resumoLoading ? 'Atualizando...' : 'Atualizar Resumo'}
+              </Text>
+            </TouchableOpacity>
+          </InfoCard>
+
         </View>
       </ScrollView>
     </LinearGradient>
