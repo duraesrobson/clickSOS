@@ -4,6 +4,7 @@
 [![Licença MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ---
+![Logo do clickSOS](/mobile/clickSOS/assets/imgs/logo-click-og.svg)
 
 ## 💻 Tecnologias (Backend & Frontend)
 
