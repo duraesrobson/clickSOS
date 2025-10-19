@@ -2,12 +2,26 @@ import type { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { View, StyleSheet, Pressable } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
-function CustomTabBarButton({ children, onPress }: BottomTabBarButtonProps) {
+function CustomTabBarButton({ children, onPress}: BottomTabBarButtonProps) {
+  const isFocused = useIsFocused(); // identifica se o botão está ativo
+
   return (
-    <Pressable onPress={onPress}
-      style={styles.buttonContainer}>
-      <View style={styles.button}>{children}</View>
+    <Pressable onPress={onPress} style={styles.buttonContainer}>
+      <View
+        style={[
+          styles.button,
+          {
+            backgroundColor: "#db2b39",
+            borderWidth: 3,
+            borderColor: isFocused ? "#fdf0d5" : "transparent",
+            elevation: isFocused ? 5 : 0,
+          }, // muda a cor ao clicar
+        ]}
+      >
+        {children}
+      </View>
     </Pressable>
   );
 }
@@ -15,7 +29,6 @@ function CustomTabBarButton({ children, onPress }: BottomTabBarButtonProps) {
 const styles = StyleSheet.create({
   buttonContainer: {
     top: -30,
-    color: "#db2b39",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -23,10 +36,8 @@ const styles = StyleSheet.create({
     width: 65,
     height: 65,
     borderRadius: 32,
-    backgroundColor: "#db2b39",
     justifyContent: "center",
     alignItems: "center",
-    elevation: 5,
   },
 });
 
@@ -36,11 +47,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: "#db2b39",
         tabBarInactiveTintColor: "#fdf0d5",
-        tabBarStyle: { backgroundColor: "#1e6ba5", height: 60, },
-        tabBarLabelStyle: {
-          fontSize: 10,
-          color: "#fdf0d5"
-        },
+        tabBarStyle: { backgroundColor: "#1e6ba5", height: 60 },
+        tabBarLabelStyle: { fontSize: 10, color: "#fdf0d5" },
         headerStyle: { backgroundColor: "#1e6ba5" },
         headerTintColor: "#fdf0d5",
         headerTitleStyle: { fontWeight: "bold" },
@@ -61,9 +69,12 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: "Alertar",
-          tabBarActiveTintColor: "black",
           tabBarIcon: () => (
-            <FontAwesome name="warning" size={28} color="#fdf0d5" />
+            <FontAwesome
+              name="warning"
+              size={28}
+              color="#fdf0d5"
+            />
           ),
           tabBarButton: (props) => <CustomTabBarButton {...props} />,
         }}
