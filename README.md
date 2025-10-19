@@ -70,7 +70,7 @@ Aqui estão algumas visualizações da aplicação móvel em desenvolvimento:
 | ![Print 1 - Tela de Login](/mobile/clickSOS/prints/print-login.jpg) | ![Print 2 - Tela de Cadastro](/mobile/clickSOS/prints/print-cadastro.jpg) | ![Print 3 - Tela Home](/mobile/clickSOS/prints/print-home.jpg) |
 | *Tela de Autenticação para acesso seguro.* | *Interface para criação da conta de usuário.* | *Dashboard principal e informações essenciais.* |
 
-| 4. Tela Alertar | 5. Tela Alerta em Progresso | 6. Tela Meu Perfil |
+| 4. Tela Alertar | 5. Tela Alertar (resumo) | 6. Tela Meu Perfil |
 | :---: | :---: | :---: |
 | ![Print 4 - Tela de Alerta SOS](/mobile/clickSOS/prints/print-alert.jpg) | ![Print 5 - Tela de ALerta SOS (resumo)](/mobile/clickSOS/prints/print-alert-2-resumo.jpg) | ![Print 6 - Tela Meu Perfil](/mobile/clickSOS/prints/print-perfil.jpg) |
 | *Botão de acionamento rápido e visualização da localização.* | *Visualização do resumo gerado pela IA.* | *Gerenciamento de dados e contatos de emergência.* |
