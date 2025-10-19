@@ -11,6 +11,22 @@ import { useRouter } from "expo-router";
 import { API_URL } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
 
+// funcao para adicionar 0 em partes da data se forem digitadas com apenas um digito
+const padDateString = (dateString:string) => {
+    const parts = dateString.split('/');
+
+    if (parts.length === 3) {
+        let [day, month, year] = parts;
+
+        day = day.padStart(2, '0');
+        month = month.padStart(2, '0');
+        
+        return `${day}/${month}/${year}`;
+    }
+
+    return dateString;
+}
+
 export default function Cadastro() {
     const router = useRouter();
 
@@ -29,9 +45,11 @@ export default function Cadastro() {
             return;
         }
 
+        const dataNascimentoFormatada = padDateString(dataNascimento);
+
         const body = {
             nome,
-            dataNascimento,
+            dataNascimento: dataNascimentoFormatada ,
             telefone,
             email,
             senha,
