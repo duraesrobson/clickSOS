@@ -182,7 +182,7 @@ export default function Cadastro() {
                     />
 
                     <Text className="text-sm text-center text-gray-500 mb-4">
-                        Você poderá adicionar mais contatos depois, na tela "Meu Perfil".
+                        Você poderá adicionar mais contatos depois, na tela "Perfil".
                     </Text>
 
                     <TouchableOpacity
