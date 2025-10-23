@@ -61,7 +61,7 @@ export default function Login() {
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
-          className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+          className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
         />
 
         <TextInput
@@ -69,7 +69,7 @@ export default function Login() {
           value={senha}
           onChangeText={setSenha}
           secureTextEntry
-          className="border border-gray-300 rounded-xl p-3 mb-6 w-full"
+          className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-6 w-full"
         />
 
         <TouchableOpacity

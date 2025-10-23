@@ -7,7 +7,7 @@ module.exports = function (api) {
     ],
     plugins: [
       [
-        "dotenv-import",
+        "babel-plugin-dotenv-import",
         {
           moduleName: "@env",
           path: ".env",

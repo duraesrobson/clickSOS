@@ -104,21 +104,21 @@ export default function Cadastro() {
                         Cadastre-se
                     </Text>
 
-                    <Text className="text-lg font-semibold mb-2">Usuário</Text>
+                    <Text className="text-lg text-blue font-semibold mb-2">Usuário</Text>
 
                     <TextInput
                         placeholder="Nome Completo"
                         value={nome}
                         onChangeText={setNome}
                         autoCapitalize="words"
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <TextInput
                         placeholder="Data de Nascimento (dd/MM/yyyy)"
                         value={dataNascimento}
                         onChangeText={setDataNascimento}
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <TextInput
@@ -126,7 +126,7 @@ export default function Cadastro() {
                         value={telefone}
                         keyboardType="phone-pad"
                         onChangeText={setTelefone}
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <TextInput
@@ -134,7 +134,7 @@ export default function Cadastro() {
                         value={email}
                         onChangeText={setEmail}
                         autoCapitalize="none"
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <TextInput
@@ -142,7 +142,7 @@ export default function Cadastro() {
                         value={senha}
                         onChangeText={setSenha}
                         secureTextEntry
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <TextInput
@@ -150,35 +150,35 @@ export default function Cadastro() {
                         value={confirmarSenha}
                         onChangeText={setConfirmarSenha}
                         secureTextEntry
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
-                    <Text className="text-lg font-semibold mb-2 mt-2">Contato Principal</Text>
+                    <Text className="text-lg text-blue font-semibold mb-2 mt-2">Contato Principal</Text>
 
                     <TextInput
                         placeholder="Nome do Contato"
                         value={contato.nome}
                         onChangeText={(text) => setContato({ ...contato, nome: text })}
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
                     <TextInput
                         placeholder="Ano de Nasc. do Contato (Ex.: 1990)"
                         value={contato.anoNascimento}
                         onChangeText={(text) => setContato({ ...contato, anoNascimento: text })}
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
                     <TextInput
                         placeholder="Email do Contato"
                         value={contato.email}
                         onChangeText={(text) => setContato({ ...contato, email: text })}
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
                     <TextInput
                         placeholder="Telefone do Contato"
                         value={contato.telefone}
                         onChangeText={(text) => setContato({ ...contato, telefone: text })}
                         keyboardType="phone-pad"
-                        className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                        className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <Text className="text-sm text-center text-gray-500 mb-4">
