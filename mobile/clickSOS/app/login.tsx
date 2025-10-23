@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "../utils/authContext";
-import { API_URL } from "@env";
 import Logo from "../assets/imgs/logo-click-og.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import Constants from "expo-constants";
 
-const apiURL = process.env.API_URL || API_URL;
+const apiURL = Constants.expoConfig?.extra?.API_URL;
 
 export default function Login() {
   const [email, setEmail] = useState("");

@@ -5,9 +5,11 @@ import * as Haptics from "expo-haptics";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "../../../utils/authContext";
-import { API_URL } from "@env";
 import InfoCard from "../../../components/InfoCard";
 import Icon from "../../../assets/imgs/iconsvg.svg"
+import Constants from "expo-constants";
+
+const apiURL = Constants.expoConfig?.extra?.API_URL;
 
 export default function Alertar() {
   const { token } = useAuth();
@@ -18,8 +20,6 @@ export default function Alertar() {
   const [locationLoading, setLocationLoading] = useState(false); // loader para a busca de localização
   const [resumo, setResumo] = useState<string | null>(null); 
   const [resumoLoading, setResumoLoading] = useState(false); //loading do resumo da ia
-
-  const apiURL = process.env.API_URL || API_URL;
 
   // funcao para busca de localizacao
   const fetchLocation = async () => {

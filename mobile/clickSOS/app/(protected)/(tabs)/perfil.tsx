@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { View, ActivityIndicator, Alert, ScrollView, TouchableOpacity, Text } from "react-native";
 import { useAuth } from "../../../utils/authContext";
-import { API_URL } from "@env";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import PerfilCard from "../../../components/PerfilCard";
 import ContatosCard from "../../../components/ContatosCard";
 import AlertsCard from "../../../components/AlertsCard";
+import Constants from "expo-constants";
+
+const apiURL = Constants.expoConfig?.extra?.API_URL;
 
 export default function Perfil() {
   const { token, logout } = useAuth();
@@ -18,7 +20,6 @@ export default function Perfil() {
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
-  const apiURL = process.env.API_URL || API_URL;
 
   const fetchAlertas = async (paginaAtual = 0) => {
     try {
@@ -184,14 +185,14 @@ export default function Perfil() {
 
         {/* Botão Sair */}
         <View className="items-center pb-12 ">
-            <TouchableOpacity
-                onPress={logout}
-                className="mt-4 mb-8 bg-red px-6 py-3 rounded-xl"
-            >
-                <Text className="text-white font-semibold">Sair da Conta</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={logout}
+            className="mt-4 mb-8 bg-red px-6 py-3 rounded-xl"
+          >
+            <Text className="text-white font-semibold">Sair da Conta</Text>
+          </TouchableOpacity>
         </View>
-        
+
       </ScrollView>
     </LinearGradient>
   );

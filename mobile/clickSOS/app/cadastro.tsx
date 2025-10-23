@@ -8,10 +8,10 @@ import {
     ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { API_URL } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
+import Constants from "expo-constants";
 
-const apiURL = process.env.API_URL || API_URL;
+const apiURL = Constants.expoConfig?.extra?.API_URL;
 
 // funcao para adicionar 0 em partes da data se forem digitadas com apenas um digito
 const padDateString = (dateString: string) => {
