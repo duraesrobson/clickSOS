@@ -13,6 +13,8 @@ import Logo from "../assets/imgs/logo-click-og.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 
+const apiURL = process.env.API_URL || API_URL;
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -22,7 +24,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       // link da api (atualmente rodando localhost)
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${apiURL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),

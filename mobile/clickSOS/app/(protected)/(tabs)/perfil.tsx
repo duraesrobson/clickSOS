@@ -18,10 +18,12 @@ export default function Perfil() {
   const [pagina, setPagina] = useState(0);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
+  const apiURL = process.env.API_URL || API_URL;
+
   const fetchAlertas = async (paginaAtual = 0) => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/alertas/meus-alertas?page=${paginaAtual}&size=10`, {
+      const res = await fetch(`${apiURL}/alertas/meus-alertas?page=${paginaAtual}&size=10`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -50,7 +52,7 @@ export default function Perfil() {
         setLoading(true);
 
         // get dados do usuario pela api
-        const userRes = await fetch(`${API_URL}/usuarios/me`, {
+        const userRes = await fetch(`${apiURL}/usuarios/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData = await userRes.json();
@@ -74,7 +76,7 @@ export default function Perfil() {
   const deletarContato = async (id: number) => {
     try {
       const response = await fetch(
-        `${API_URL}/usuarios/me/contatos/${id}`, {
+        `${apiURL}/usuarios/me/contatos/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -100,7 +102,7 @@ export default function Perfil() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/usuarios/me/contatos`, {
+      const response = await fetch(`${apiURL}/usuarios/me/contatos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

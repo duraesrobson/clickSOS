@@ -11,6 +11,8 @@ import { useRouter } from "expo-router";
 import { API_URL } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
 
+const apiURL = process.env.API_URL || API_URL;
+
 // funcao para adicionar 0 em partes da data se forem digitadas com apenas um digito
 const padDateString = (dateString: string) => {
     const parts = dateString.split('/');
@@ -58,7 +60,7 @@ export default function Cadastro() {
         };
 
         try {
-            const response = await fetch(`${API_URL}/usuarios`, {
+            const response = await fetch(`${apiURL}/usuarios`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),

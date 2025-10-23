@@ -19,6 +19,8 @@ export default function Alertar() {
   const [resumo, setResumo] = useState<string | null>(null); 
   const [resumoLoading, setResumoLoading] = useState(false); //loading do resumo da ia
 
+  const apiURL = process.env.API_URL || API_URL;
+
   // funcao para busca de localizacao
   const fetchLocation = async () => {
     setLocationLoading(true);
@@ -105,7 +107,7 @@ export default function Alertar() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
       // faz o POST no backend (USANDO APENAS LATITUDE E LONGITUDE)
-      const response = await fetch(`${API_URL}/alertas`, {
+      const response = await fetch(`${apiURL}/alertas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +155,7 @@ export default function Alertar() {
       setResumoLoading(true);
       
       // faz a conexao com a api
-      const resumoRes = await fetch(`${API_URL}/alertas/resumo`, {
+      const resumoRes = await fetch(`${apiURL}/alertas/resumo`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

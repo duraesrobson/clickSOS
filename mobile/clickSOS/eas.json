@@ -9,9 +9,6 @@
       "distribution": "internal"
     },
     "preview": {
-      "env": {
-        "API_URL": "@API_URL"
-      },
       "distribution": "internal",
       "android": {
         "buildType": "apk"
