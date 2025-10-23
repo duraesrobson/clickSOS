@@ -132,6 +132,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                         <Text className="text-blue text-xl font-bold mb-2">Novo Contato</Text>
                         <TextInput
                             placeholder="Nome e Sobrenome"
+                            placeholderTextColor="#6b7280"
                             className="border border-gray-300 rounded p-2 mb-2"
                             value={novoContato.nome}
                             onChangeText={(text) => setNovoContato({ ...novoContato, nome: text })}
@@ -139,6 +140,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                         />
                         <TextInput
                             placeholder="Email (teste@email.com)"
+                            placeholderTextColor="#6b7280"
                             className="border border-gray-300 rounded p-2 mb-2"
                             keyboardType="email-address"
                             value={novoContato.email}
@@ -147,6 +149,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                         />
                         <TextInput
                             placeholder="Telefone (21912345678)"
+                            placeholderTextColor="#6b7280"
                             className="border border-gray-300 rounded p-2 mb-4"
                             maxLength={11}
                             keyboardType="phone-pad"
@@ -156,6 +159,7 @@ const ContactsCard: React.FC<ContactsCardProps> = ({
                         />
                         <TextInput
                             placeholder="Ano de Nascimento (Ex.: 1995)"
+                            placeholderTextColor="#6b7280"
                             className="border border-gray-300 rounded p-2 mb-4"
                             keyboardType="phone-pad"
                             value={novoContato.anoNascimento === null ? '' : String(novoContato.anoNascimento)}

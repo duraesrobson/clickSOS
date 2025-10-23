@@ -12,7 +12,7 @@ import { API_URL } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
 
 // funcao para adicionar 0 em partes da data se forem digitadas com apenas um digito
-const padDateString = (dateString:string) => {
+const padDateString = (dateString: string) => {
     const parts = dateString.split('/');
 
     if (parts.length === 3) {
@@ -20,7 +20,7 @@ const padDateString = (dateString:string) => {
 
         day = day.padStart(2, '0');
         month = month.padStart(2, '0');
-        
+
         return `${day}/${month}/${year}`;
     }
 
@@ -49,7 +49,7 @@ export default function Cadastro() {
 
         const body = {
             nome,
-            dataNascimento: dataNascimentoFormatada ,
+            dataNascimento: dataNascimentoFormatada,
             telefone,
             email,
             senha,
@@ -111,6 +111,7 @@ export default function Cadastro() {
                         value={nome}
                         onChangeText={setNome}
                         autoCapitalize="words"
+                        placeholderTextColor="#6b7280"
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
@@ -118,12 +119,14 @@ export default function Cadastro() {
                         placeholder="Data de Nascimento (dd/MM/yyyy)"
                         value={dataNascimento}
                         onChangeText={setDataNascimento}
+                        placeholderTextColor="#6b7280"
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
 
                     <TextInput
                         placeholder="Telefone (Ex.: 21912345678)"
                         value={telefone}
+                        placeholderTextColor="#6b7280"
                         keyboardType="phone-pad"
                         onChangeText={setTelefone}
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
@@ -132,6 +135,7 @@ export default function Cadastro() {
                     <TextInput
                         placeholder="Email"
                         value={email}
+                        placeholderTextColor="#6b7280"
                         onChangeText={setEmail}
                         autoCapitalize="none"
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
@@ -139,6 +143,7 @@ export default function Cadastro() {
 
                     <TextInput
                         placeholder="Senha"
+                        placeholderTextColor="#6b7280"
                         value={senha}
                         onChangeText={setSenha}
                         secureTextEntry
@@ -147,6 +152,7 @@ export default function Cadastro() {
 
                     <TextInput
                         placeholder="Confirmar Senha"
+                        placeholderTextColor="#6b7280"
                         value={confirmarSenha}
                         onChangeText={setConfirmarSenha}
                         secureTextEntry
@@ -157,24 +163,28 @@ export default function Cadastro() {
 
                     <TextInput
                         placeholder="Nome do Contato"
+                        placeholderTextColor="#6b7280"
                         value={contato.nome}
                         onChangeText={(text) => setContato({ ...contato, nome: text })}
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
                     <TextInput
                         placeholder="Ano de Nasc. do Contato (Ex.: 1990)"
+                        placeholderTextColor="#6b7280"
                         value={contato.anoNascimento}
                         onChangeText={(text) => setContato({ ...contato, anoNascimento: text })}
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
                     <TextInput
                         placeholder="Email do Contato"
+                        placeholderTextColor="#6b7280"
                         value={contato.email}
                         onChangeText={(text) => setContato({ ...contato, email: text })}
                         className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
                     />
                     <TextInput
                         placeholder="Telefone do Contato"
+                        placeholderTextColor="#6b7280"
                         value={contato.telefone}
                         onChangeText={(text) => setContato({ ...contato, telefone: text })}
                         keyboardType="phone-pad"

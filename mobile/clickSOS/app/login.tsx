@@ -62,12 +62,14 @@ export default function Login() {
           onChangeText={setEmail}
           autoCapitalize="none"
           className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-4 w-full"
+          placeholderTextColor="#6b7280"
         />
 
         <TextInput
           placeholder="Senha"
           value={senha}
           onChangeText={setSenha}
+          placeholderTextColor="#6b7280"
           secureTextEntry
           className="border text-gray-500 border-gray-300 rounded-xl p-3 mb-6 w-full"
         />
