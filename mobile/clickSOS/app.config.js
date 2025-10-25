@@ -8,6 +8,13 @@ export default ({ config }) => {
 
     return {
         ...config,
+        android: {
+            ...config.android, 
+            permissions: [
+                "INTERNET",
+            ],
+            usesCleartextTraffic: true, 
+        },
         plugins: [
             [
                 "expo-build-properties",

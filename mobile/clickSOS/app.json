@@ -21,6 +21,10 @@
         "foregroundImage": "./assets/imgs/adaptive-icon.png",
         "backgroundColor": "#fdf0d5"
       },
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "INTERNET"
+      ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.clickSOS.app"
