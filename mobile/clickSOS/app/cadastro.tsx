@@ -60,7 +60,7 @@ export default function Cadastro() {
         };
 
         try {
-            const response = await fetch("http://150.230.64.80:8080/usuarios", {
+            const response = await fetch("http://15.228.204.198:8080/usuarios", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),

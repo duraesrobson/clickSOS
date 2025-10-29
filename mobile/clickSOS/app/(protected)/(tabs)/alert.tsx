@@ -107,7 +107,7 @@ export default function Alertar() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
       // faz o POST no backend (USANDO APENAS LATITUDE E LONGITUDE)
-      const response = await fetch("http://150.230.64.80:8080/alertas", {
+      const response = await fetch("http://15.228.204.198:8080/alertas", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export default function Alertar() {
       setResumoLoading(true);
       
       // faz a conexao com a api
-      const resumoRes = await fetch("http://150.230.64.80:8080/alertas/resumo", {
+      const resumoRes = await fetch("http://15.228.204.198:8080/alertas/resumo", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
